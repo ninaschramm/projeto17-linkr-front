@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from  'react-loader-spinner';
+import PostCard from './PostCard';
 
 export default function TimeLine() {
     const navigate = useNavigate();
@@ -35,7 +36,11 @@ export default function TimeLine() {
 	return (
 		<Page>
 			<Container>
-                {callShowPosts}
+                <Title>timeline</Title>
+                <PostCard />
+                <PostCard />
+                <PostCard />
+                <PostCard />
 			</Container>
 		</Page>
 	);
@@ -45,11 +50,23 @@ export default function TimeLine() {
 const Page = styled.div`
 	min-height: 100vh;
 	width: 100%;
+    display: flex;
+    justify-content: center;
 `;
 
 const Container = styled.div`
+    margin-top: 140px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: center;
+`
+
+const Title = styled.div`
+    font-family: 'Oswald';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 64px;
+    color: #FFFFFF;
+    margin-bottom: 43px;
 `
