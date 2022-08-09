@@ -7,6 +7,7 @@ export default function HomePage() {
 	return (
 		<Page>
 			<Navbar />
+			<TimeLine />
 		</Page>
 	);
 }
