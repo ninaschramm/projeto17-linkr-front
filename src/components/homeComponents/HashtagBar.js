@@ -75,7 +75,7 @@ export default function HashtagBar() {
 }
 
 const Hashtags = styled.div`
-    position: fixed;
+    position: absolute;
     top: 232px;
     margin-left: 25px;
     width: 301px;
@@ -99,6 +99,10 @@ const Hashtags = styled.div`
     p {
         cursor: pointer;
     }
+
+    @media (max-width: 430px) {
+        display: none;
+    }
 `
 
 const Rectangle = styled.div `
@@ -112,3 +116,4 @@ const HashtagsList = styled.div `
     max-height: 300px;
     margin: 0 16px;
 `
+

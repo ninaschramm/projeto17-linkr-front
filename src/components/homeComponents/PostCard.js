@@ -72,6 +72,11 @@ const Card = styled.div `
             color: #FFFFFF;
             cursor: pointer;
         }
+
+        @media (max-width: 430px) {
+            width: 100%;
+            border-radius: 0;
+        }
     `
 
 const CardContent = styled.div`
