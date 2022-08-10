@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from  'react-loader-spinner';
 import PostCard from './PostCard';
+import HashtagBar from './HashtagBar';
 
 export default function TimeLine() {
     const navigate = useNavigate();
@@ -42,6 +43,9 @@ export default function TimeLine() {
                 <PostCard />
                 <PostCard />
 			</Container>
+            <div>
+                <HashtagBar />
+            </div>          
 		</Page>
 	);
 }
