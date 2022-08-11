@@ -62,7 +62,10 @@ export const Form = styled.form`
 
     .disabled-button{
         background-color: #263a55;
-        color: #7a7474
+        color: #7a7474;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     button{
