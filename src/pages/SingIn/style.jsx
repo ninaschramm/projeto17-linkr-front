@@ -60,6 +60,11 @@ export const Form = styled.form`
         font-family: 'Oswald', sans-serif;
     }
 
+    .disabled-button{
+        background-color: #263a55;
+        color: #7a7474
+    }
+
     button{
         background-color: #1877F2;
         color: #FFFFFF;

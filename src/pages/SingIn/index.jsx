@@ -9,20 +9,38 @@ import { Page, Form } from './style';
 export default function SingIn() {
 
 	const navigate = useNavigate();
-	/*const [singIn, setSingIn] = useState({
-		email: "",
-		password: ""
-	});*/
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [disable, setDisable] = useState("");
+	const [disable, setDisable] = useState(false);
 
-	/*function handleInput(e){
-		singIn[e.target.name] = e.target.value;
-		setSingIn({...singIn});
-	}*/
+	const {setUser} = useContext(UserContext);
 
-	//const {email, password} = singIn
+	function userLogin(e){
+		e.preventDefault();
+		setDisable(true);
+
+		const promise = axios.post(`http://localhost:5000/singin`,{
+			email,
+			password
+		});
+
+		promise.then(res => {
+			const {data} = res;
+			console.log(data);
+			localStorage.setItem(
+				"UserInfo",
+				JSON.stringify({token: data.token, img: data.img})
+			);
+			setUser(data);
+			setDisable(false);
+			return navigate("/home")
+		});
+		promise.catch((e) => {
+			console.log(e.response.data);
+			alert(e.response.data)
+			return setDisable(false);
+		});
+	}
 
 	return (
 		<Page>
@@ -32,12 +50,11 @@ export default function SingIn() {
 				the best links on the web</h2>
 			</section>
 			<section className='right-side'>
-				<Form /*onSubmit={submit function}*/>
+				<Form onSubmit={userLogin}>
 					<input
 						type="email"
 						placeholder="e-mail"
 						value={email}
-						//onChange={handleInput}
 						onChange={e => setEmail(e.target.value)}
 						disabled = {disable}
 						required
@@ -46,14 +63,13 @@ export default function SingIn() {
 						type="password"
 						placeholder="password"
 						value={password}
-						//onChange={handleInput}
 						onChange={e => setPassword(e.target.value)}
 						disabled = {disable}
 						required
 					/>
-					{disable === "" ?
+					{disable === false ?
 						(<button type="submit">Log In</button>) :
-						(<button type="submit" className="disabled-button" disabled = {true}>Log In</button>)
+						(<button type="submit" className="disabled-button" disabled = {true}>...</button>)
 					}
 				</Form>
 				<Link to={"/sing-up"}>
