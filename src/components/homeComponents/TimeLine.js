@@ -16,7 +16,8 @@ export default function TimeLine() {
         const promise = axios.get(URL);
         promise.then((res)=> {
             setPosts(res.data);
-        });
+        })
+        promise.catch(() => {setPosts('error')});
     }, [])
 
     function showPosts() {
@@ -24,7 +25,10 @@ export default function TimeLine() {
             return <ThreeDots width={51} height={13} color="#D1D1D4" />
         } 
         else if (posts === "") {
-            return <></>
+            return <>There are no posts yet.</>
+        }
+        else if (posts === 'error') {
+            return <>An error occured while trying to fetch the posts, please refresh the page.</>
         }
         else {
             return (posts.map((post, index) => <PostCard post={post}/>))
