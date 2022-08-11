@@ -15,7 +15,7 @@ export default function PostCard (props) {
                     {props.post.username}
                 </h1>                
                 <p>
-                    <ReactHashtag onHashtagClick={(elt)=>{navigate(`hashtag/:${elt.toLowerCase().slice(1)}`)}}>                  
+                    <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
                     {props.post.text}
                     </ReactHashtag>
                 </p>
