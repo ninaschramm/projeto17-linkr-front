@@ -19,7 +19,7 @@ export default function PostCard (props) {
                     {props.post.text}
                     </ReactHashtag>
                 </p>
-                <a href={props.post.link}>
+                <a href={props.post.link} target="_blank">
                     <Snippet image={props.post.postImage} title={props.post.postTitle} description={props.post.postDescription} link={props.post.link}/>
                 </a>
             </CardContent>
