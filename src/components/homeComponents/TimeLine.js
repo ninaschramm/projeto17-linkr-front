@@ -12,7 +12,7 @@ export default function TimeLine() {
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
-        const URL = "";
+        const URL = "http://localhost:5000/posts";
         const promise = axios.get(URL);
         promise.then((res)=> {
             setPosts(res.data);
@@ -27,7 +27,7 @@ export default function TimeLine() {
             return <></>
         }
         else {
-            return (posts.map((post, index) => <h1>Test</h1>))
+            return (posts.map((post, index) => <PostCard post={post}/>))
         }
     }
 
@@ -38,10 +38,7 @@ export default function TimeLine() {
 		<Page>
 			<Container>
                 <Title>timeline</Title>
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
+                {callShowPosts}
 			</Container>
             <div>
                 <HashtagBar />
@@ -62,7 +59,7 @@ const Container = styled.div`
     margin-top: 140px;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	//justify-content: center;
 `
 
 const Title = styled.div`
