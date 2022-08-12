@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ThreeDots } from  'react-loader-spinner';
 import PostCard from './PostCard';
 import HashtagBar from './HashtagBar';
+import CreatePostCard from './CreatePostCard';
 
 export default function TimeLine() {
     const navigate = useNavigate();
@@ -42,6 +43,7 @@ export default function TimeLine() {
 		<Page>
 			<Container>
                 <Title>timeline</Title>
+                <CreatePostCard />
                 {callShowPosts}
 			</Container>
             <div>
@@ -57,6 +59,7 @@ const Page = styled.div`
 	width: 100%;
     display: flex;
     justify-content: center;
+    
 `;
 
 const Container = styled.div`
