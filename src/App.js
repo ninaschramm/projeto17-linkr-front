@@ -10,20 +10,16 @@ import HomePage from './pages/HomePage';
 
 function App() {
 	
-	const [x, setX] = useState("x");
 	const [user, setUser] = useState(null);
 
-	useEffect(() => {
-		localStorage.setItem("y", "yy");
-	}, []);
-
 	return (
-		<UserContext.Provider value={{ x, setX, user, setUser }}>
+		<UserContext.Provider value={{ user, setUser }}>
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<SingIn />} />
 					<Route path="/sign-up" element={<SingUp />} />
 					<Route path="/home" element={<HomePage />} />
+
 				</Routes>
 			</BrowserRouter>
 		</UserContext.Provider>

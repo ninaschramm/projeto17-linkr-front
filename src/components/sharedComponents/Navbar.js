@@ -39,6 +39,9 @@ const Container = styled.div`
     top:0px;
     z-index: 3;
     box-sizing: border-box;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box; 
     h1:hover {
         color: lightgray;
         cursor: pointer;
