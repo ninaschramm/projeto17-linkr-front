@@ -80,7 +80,7 @@ export default function SingIn() {
 						</button>)
 					}
 				</Form>
-				<Link to={"/sing-up"}>
+				<Link to={"/sign-up"}>
 					<p>First time? Create an account!</p>
 				</Link>
 			</section>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import UserContext from "./contexts/UserContext";
 
 import SingIn from './pages/SingIn';
-import SignUpPage from './pages/SignUpPage';
+import SingUp from './pages/SingUp';
 import HomePage from './pages/HomePage';
 
 
@@ -22,7 +22,7 @@ function App() {
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<SingIn />} />
-					<Route path="/sign-up" element={<SignUpPage />} />
+					<Route path="/sign-up" element={<SingUp />} />
 					<Route path="/home" element={<HomePage />} />
 				</Routes>
 			</BrowserRouter>
