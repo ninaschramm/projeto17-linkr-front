@@ -1,6 +1,8 @@
 import { React, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router";
+import { ThreeDots } from 'react-loader-spinner'
+
 import axios from 'axios';
 
 import UserContext from '../../contexts/UserContext';
@@ -69,7 +71,13 @@ export default function SingIn() {
 					/>
 					{disable === false ?
 						(<button type="submit">Log In</button>) :
-						(<button type="submit" className="disabled-button" disabled = {true}>...</button>)
+						(<button type="submit" className="disabled-button" disabled = {true}>
+							<ThreeDots
+								color='#a0a0a0'
+								height={30}
+								width={70}
+							/>
+						</button>)
 					}
 				</Form>
 				<Link to={"/sing-up"}>
