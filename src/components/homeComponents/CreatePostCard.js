@@ -82,7 +82,7 @@ export default function CreatePostCard (props) {
                         onChange={(e) => setText(e.target.value)}
                         disabled={isLoading}
                     />
-				    <Button type="submit" disabled={isLoading} >Publish</Button>
+				    <Button type="submit" disabled={isLoading} >{ isLoading ?  "Publishing..." : "Publish"}</Button>
 			    </Forms>
 		    </Container>
             </CardContent>

@@ -17,7 +17,7 @@ export default function PostCard (props) {
             id: parseInt(id)
         }
         console.log(body)
-        const promise = axios.delete('https://projeto17-linkr-g5.herokuapp.com/posts', body, { });
+        const promise = axios.delete('http://localhost:5000/posts', body, { });
 		promise.then((res) => {
 			console.log(res);
            // window.location.reload();            
@@ -67,6 +67,7 @@ const Card = styled.div `
     font-size: 17px;
     line-height: 20px;
     color: #B7B7B7;
+    overflow: hidden;
 
         h1 {
             font-size: 19px;
@@ -101,6 +102,7 @@ const CardContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow: hidden;
 `
 
 const TopLine = styled.div`
