@@ -3,23 +3,46 @@ import styled from 'styled-components';
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from 'react-router-dom';
 import Snippet from "./Snippet";
+import axios from "axios";
 
 export default function PostCard (props) {
     const navigate = useNavigate();
 
+    // const headers = {
+    //     Authorization: `Bearer ${token}`,
+    // }
+
+    function deletePost(id){
+        const body = {
+            id: parseInt(id)
+        }
+        console.log(body)
+        const promise = axios.delete('http://localhost:5000/posts', body, { });
+		promise.then((res) => {
+			console.log(res);
+           // window.location.reload();            
+		});
+		promise.catch((err) => {
+			alert(err.response.data);
+		});
+    }
+
     return (
         <Card>
-            <img src={props.post.userPicture} />
+            <img src={props.post.userPicture} alt=""/>
             <CardContent>
-                <h1> 
+                <TopLine>
+                    <h1> 
                     {props.post.username}
-                </h1>                
+                    </h1>    
+                    <ion-icon id={props.post.id} onClick={(e) => deletePost(e.target.id)} name="trash-outline"></ion-icon>    
+                </TopLine>                       
                 <p>
                     <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
                     {props.post.text}
                     </ReactHashtag>
                 </p>
-                <a href={props.post.link} target="_blank">
+                <a href={props.post.link} target="_blank" rel="noreferrer">
                     <Snippet image={props.post.postImage} title={props.post.postTitle} description={props.post.postDescription} link={props.post.link}/>
                 </a>
             </CardContent>
@@ -80,4 +103,12 @@ const CardContent = styled.div`
     gap: 10px;
 `
 
+const TopLine = styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    ion-icon {
+        cursor: pointer;
+    }
+    `
 
