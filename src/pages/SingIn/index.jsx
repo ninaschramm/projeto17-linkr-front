@@ -21,7 +21,7 @@ export default function SingIn() {
 		e.preventDefault();
 		setDisable(true);
 
-		const promise = axios.post(`http://localhost:5000/singin`,{
+		const promise = axios.post(`http://localhost:5000/signin`,{
 			email,
 			password
 		});
