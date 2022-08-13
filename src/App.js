@@ -18,7 +18,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<SingIn />} />
 					<Route path="/sign-up" element={<SingUp />} />
-					<Route path="/home" element={<HomePage />} />
+					<Route path="/timeline" element={<HomePage />} />
 
 				</Routes>
 			</BrowserRouter>

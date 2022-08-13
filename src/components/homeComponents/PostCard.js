@@ -17,7 +17,7 @@ export default function PostCard (props) {
             id: parseInt(id)
         }
         console.log(body)
-        const promise = axios.delete('http://localhost:5000/posts', body, { });
+        const promise = axios.delete('https://projeto17-linkr-g5.herokuapp.com/posts', body, { });
 		promise.then((res) => {
 			console.log(res);
            // window.location.reload();            

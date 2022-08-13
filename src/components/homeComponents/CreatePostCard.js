@@ -12,6 +12,7 @@ export default function CreatePostCard (props) {
 
     const [link, setLink] = useState('');
 	const [text, setText] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		// const locallyStoredToken = localStorage.getItem('token');
@@ -25,6 +26,8 @@ export default function CreatePostCard (props) {
 
 	const createPost = (event) => {
 		event.preventDefault();
+        setIsLoading(true);
+
 		const post = {
 			link,
 			text
@@ -34,18 +37,21 @@ export default function CreatePostCard (props) {
 
         if(!isLinkValid){
             alert("link is invalid");
+            setIsLoading(false);
             return
         }
 
         console.log(post)
-		const promise = axios.post('http://localhost:5000/posts', post);
+		const promise = axios.post('https://projeto17-linkr-g5.herokuapp.com/posts', post);
 		promise.then((res) => {
 			alert(res.data);
+            setIsLoading(false);
             window.location.reload();
             
 		});
 		promise.catch((err) => {
 			alert(err.response.data);
+            setIsLoading(false);
 		});
 	};
 
@@ -67,15 +73,16 @@ export default function CreatePostCard (props) {
                         placeholder="http://..."
                         value={link}
                         onChange={(e) => setLink(e.target.value)}
+                        disabled={isLoading}
                     />
                     <input
-                        required
                         type="text"
                         placeholder="Awesome article about #javascript"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
+                        disabled={isLoading}
                     />
-				    <Button type="submit">Publish</Button>
+				    <Button type="submit" disabled={isLoading} >Publish</Button>
 			    </Forms>
 		    </Container>
             </CardContent>
