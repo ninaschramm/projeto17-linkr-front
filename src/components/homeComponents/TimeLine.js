@@ -1,19 +1,22 @@
 import styled from 'styled-components';
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from  'react-loader-spinner';
 import PostCard from './PostCard';
 import HashtagBar from './HashtagBar';
 import CreatePostCard from './CreatePostCard';
+import UserContext from '../../contexts/UserContext';
+import Modal from './Modal';
 
 export default function TimeLine() {
     const navigate = useNavigate();
+    const {isModalVisible} = useContext(UserContext)
 
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
-        const URL = "http://localhost:5000/posts";
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/posts`;
         const promise = axios.get(URL);
         promise.then((res)=> {
             setPosts(res.data);
@@ -22,6 +25,7 @@ export default function TimeLine() {
     }, [])
 
     function showPosts() {
+        console.log(posts)
         if (posts === null) {
             return <ThreeDots width={51} height={13} color="#D1D1D4" />
         } 
@@ -32,7 +36,7 @@ export default function TimeLine() {
             return <>An error occured while trying to fetch the posts, please refresh the page.</>
         }
         else {
-            return (posts.map((post, index) => <PostCard post={post}/>))
+            return (posts.map((post, index) => <PostCard key={index} post={post} />))
         }
     }
 
@@ -41,6 +45,7 @@ export default function TimeLine() {
 
 	return (
 		<Page>
+            {isModalVisible ? <Modal /> : null}
 			<Container>
                 <Title>timeline</Title>
                 <CreatePostCard />

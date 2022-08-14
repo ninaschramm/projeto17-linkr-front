@@ -11,9 +11,11 @@ import HomePage from './pages/HomePage';
 function App() {
 	
 	const [user, setUser] = useState(null);
+	const [isModalVisible, setIsModalVisible] = useState(false)
+    const [deleteId, setDeleteId] = useState('')
 
 	return (
-		<UserContext.Provider value={{ user, setUser }}>
+		<UserContext.Provider value={{ user, setUser, isModalVisible, setIsModalVisible, deleteId, setDeleteId }}>
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<SingIn />} />

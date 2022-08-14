@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
+import dotenv from 'dotenv';
 
 import axios from "axios";
 
@@ -19,7 +20,7 @@ export default function SingUp() {
         e.preventDefault();
         setDisable(true);
 
-        const promise = axios.post(`http://localhost:5000/singup`,{
+        const promise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/signup`,{
             email: email,
             username: username,
             password: password,
