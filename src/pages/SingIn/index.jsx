@@ -1,6 +1,6 @@
 import { React, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router-dom';
 import { ThreeDots } from 'react-loader-spinner'
 
 import axios from 'axios';

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,47 @@ export default function PostCard (props) {
     // const headers = {
     //     Authorization: `Bearer ${token}`,
     // }
+    
+    const [likes, setLikes] = useState(null);
+    const [liked, setLiked] = useState(false);
+    const [likeloading, setLikeloading] = useState(false);
+
+    useEffect(() => {
+        getLikes();
+    }, [])
+
+    function getLikes(){
+        const URL = "http://localhost:5000/like/"+props.post.id;
+        const promise = axios.get(URL);
+        promise.then((res)=> {
+            setLikes(res.data);
+        })
+        promise.catch(() => {console.log('error on likes request')});
+    }
+
+    console.log(likes);
+
+    function addLike(id){
+        setLikeloading(true);
+        const URL = "http://localhost:5000/like/"+ id;
+        const promise = axios.post(URL);
+        promise.then(() => {
+            getLikes();
+            setLiked(true);
+            setLikeloading(false);
+        });
+    }
+
+    function deleteLike(id){
+        setLikeloading(true);
+        const URL = "http://localhost:5000/like/"+ id;
+        const promise = axios.delete(URL);
+        promise.then(() => {
+            getLikes();
+            setLiked(false);
+            setLikeloading(false);
+        });
+    }
 
     function deletePost(id){
         const body = {
@@ -29,7 +70,16 @@ export default function PostCard (props) {
 
     return (
         <Card>
-            <img src={props.post.userPicture} alt=""/>
+            <PerfilAndLikes>
+                <img src={props.post.userPicture} alt=""/>
+                {(liked)? 
+                    <ion-icon id={props.post.id} onClick={(e) => deleteLike(e.target.id)} name="heart"></ion-icon> 
+                    : 
+                    <ion-icon className = {(likeloading)? 'loading' : 'red'} id={props.post.id} onClick={(e) => addLike(e.target.id)} name="heart-outline"></ion-icon> }
+                <span>
+                    {(likes)? likes.likesTotal : '0'} likes
+                </span>
+            </PerfilAndLikes>
             <CardContent>
                 <TopLine>
                     <h1> 
@@ -77,13 +127,6 @@ const Card = styled.div `
         a {
 
         }
-
-        img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 26.5px;
-        }
         
         span {
             font-weight: 700;
@@ -96,7 +139,38 @@ const Card = styled.div `
             border-radius: 0;
         }
     `
+const PerfilAndLikes = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 26.5px;
+        margin-bottom: 19px;
+    }
 
+    ion-icon{
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .red {
+        color: #AC0000;
+    }
+    .loading {
+        color: #fc8888;
+    }
+    span{    
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 13px;
+        color: #FFFFFF;
+    }
+
+`
 const CardContent = styled.div`
     display: flex;
     flex-direction: column;

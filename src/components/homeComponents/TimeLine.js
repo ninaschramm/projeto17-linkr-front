@@ -32,7 +32,7 @@ export default function TimeLine() {
             return <>An error occured while trying to fetch the posts, please refresh the page.</>
         }
         else {
-            return (posts.map((post, index) => <PostCard post={post}/>))
+            return (posts.map((post, index) => <PostCard key = {index} post={post}/>))
         }
     }
 
