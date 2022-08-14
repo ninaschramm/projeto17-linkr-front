@@ -13,7 +13,7 @@ export default function TimeLine() {
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
-        const URL = "http://localhost:5000/posts";
+        const URL = "https://projeto17-linkr-g5.herokuapp.com/posts";
         const promise = axios.get(URL);
         promise.then((res)=> {
             setPosts(res.data);
@@ -32,7 +32,7 @@ export default function TimeLine() {
             return <>An error occured while trying to fetch the posts, please refresh the page.</>
         }
         else {
-            return (posts.map((post, index) => <PostCard post={post}/>))
+            return (posts.map((post, index) => {if(post != null){return <PostCard key={index} post={post}/>}}))
         }
     }
 
