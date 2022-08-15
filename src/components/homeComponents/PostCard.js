@@ -4,6 +4,8 @@ import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from 'react-router-dom';
 import Snippet from "./Snippet";
 import axios from "axios";
+import ReactTooltip from "react-tooltip";
+
 
 export default function PostCard (props) {
     const navigate = useNavigate();
@@ -29,17 +31,20 @@ export default function PostCard (props) {
         promise.catch(() => {console.log('error on likes request')});
     }
 
-    console.log(likes);
-
     function addLike(id){
         setLikeloading(true);
         const URL = "http://localhost:5000/like/"+ id;
         const promise = axios.post(URL);
+        console.log(URL);
         promise.then(() => {
             getLikes();
             setLiked(true);
             setLikeloading(false);
         });
+        promise.catch((err) => {
+			alert(err.response.data);
+            setLikeloading(false);
+		});
     }
 
     function deleteLike(id){
@@ -51,6 +56,10 @@ export default function PostCard (props) {
             setLiked(false);
             setLikeloading(false);
         });
+        promise.catch((err) => {
+			alert(err.response.data);
+            setLikeloading(false);
+		});
     }
 
     function deletePost(id){
@@ -73,11 +82,32 @@ export default function PostCard (props) {
             <PerfilAndLikes>
                 <img src={props.post.userPicture} alt=""/>
                 {(liked)? 
-                    <ion-icon id={props.post.id} onClick={(e) => deleteLike(e.target.id)} name="heart"></ion-icon> 
+                    <button  className={(likeloading)? 'loading': 'red'} disabled={likeloading}>
+                        <ion-icon name="heart" id={props.post.id} onClick={(e) => {if(!likeloading){deleteLike(e.target.id)}}}></ion-icon> 
+                    </button>  
                     : 
-                    <ion-icon className = {(likeloading)? 'loading' : 'red'} id={props.post.id} onClick={(e) => addLike(e.target.id)} name="heart-outline"></ion-icon> }
+                    <button className={(likeloading)? 'loading' : ''} disabled={likeloading}>
+                        <ion-icon name="heart-outline"  id={props.post.id} onClick={(e) => {if(!likeloading){addLike(e.target.id)}}} ></ion-icon> 
+                    </button>  
+                    }
+
                 <span>
-                    {(likes)? likes.likesTotal : '0'} likes
+                    <a  data-for='qualquer' data-tip={
+                        (likes)? 
+                            (likes.usernames.length > 0)? 
+                                (likes.usernames.length > 1)? 
+                                    (likes.usernames.length > 2)?   
+                                        `${(liked)? 'você, ' : ''}${likes.usernames[0]}, ${likes.usernames[1]} e outras ${likes.likesTotal - 2} pessoas`
+                                    :`${(liked)? 'você, ': ''}${likes.usernames[0]} e ${likes.usernames[1]}`
+                                : `${(liked)? 'você e ': ''} ${likes.usernames[0]}` 
+                            : [''] 
+                        : ['']   
+                    }>
+                        {(likes)? likes.likesTotal : '0'} likes
+                    </a>
+                    <ReactTooltip id='qualquer' type="light" place="bottom" effect="solid" 
+                        getContent={(dataTip) => `${dataTip}`}
+                    />
                 </span>
             </PerfilAndLikes>
             <CardContent>
@@ -151,11 +181,17 @@ const PerfilAndLikes = styled.div`
         margin-bottom: 19px;
     }
 
+    button{
+        background: none;
+        border: none;
+        color: #FFFFFF;
+    }
+
     ion-icon{
         font-size: 24px;
         cursor: pointer;
     }
-    .red {
+    .red{
         color: #AC0000;
     }
     .loading {
