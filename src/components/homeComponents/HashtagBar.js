@@ -27,7 +27,7 @@ export default function HashtagBar() {
             return <></>
         }
         else {
-            return (hashtags.map((hashtag, index) => <p onClick={()=>{navigate(`hashtag/:${hashtag.hashtag.toLowerCase()}`)}}> {`#${hashtag.hashtag}`} </p>))
+            return (hashtags.map((hashtag, index) => <p onClick={()=>{navigate(`/hashtag/${hashtag.hashtag.toLowerCase()}`)}}> {`#${hashtag.hashtag}`} </p>))
         }
     }
 
