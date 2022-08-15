@@ -13,7 +13,8 @@ import ReactTooltip from "react-tooltip";
 export default function PostCard ( {post} ) {
     const navigate = useNavigate();
     const { deleteId, setDeleteId, setIsModalVisible } = useContext(UserContext);   
-    const token = null;
+    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
+    const token = UserInfo.token;
 
     const headers = {
         Authorization: `Bearer ${token}`,
@@ -39,7 +40,7 @@ export default function PostCard ( {post} ) {
     function addLike(id){
         setLikeloading(true);
         const URL = "http://localhost:5000/like/"+ id;
-        const promise = axios.post(URL);
+        const promise = axios.post(URL, headers);
         console.log(URL);
         promise.then(() => {
             getLikes();
@@ -55,7 +56,7 @@ export default function PostCard ( {post} ) {
     function deleteLike(id){
         setLikeloading(true);
         const URL = "http://localhost:5000/like/"+ id;
-        const promise = axios.delete(URL);
+        const promise = axios.delete(URL, headers);
         promise.then(() => {
             getLikes();
             setLiked(false);
