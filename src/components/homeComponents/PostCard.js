@@ -57,6 +57,7 @@ const Card = styled.div `
     font-size: 17px;
     line-height: 20px;
     color: #B7B7B7;
+    overflow: hidden;
 
         h1 {
             font-size: 19px;
@@ -91,6 +92,7 @@ const CardContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow: hidden;
 `
 
 const TopLine = styled.div`
