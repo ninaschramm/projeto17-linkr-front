@@ -13,13 +13,11 @@ export default function CreatePostCard (props) {
     const [link, setLink] = useState('');
 	const [text, setText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const UserInfo = JSON. parse(localStorage.getItem('UserInfo'));
 
 	useEffect(() => {
-		// const locallyStoredToken = localStorage.getItem('token');
-        const locallyStoredToken = 1;
-        // token ainda não implementado
 
-		if (locallyStoredToken === null) {
+		if (UserInfo.token === null) {
 			navigate('/', { replace: true });
 		}
 	}, []);
@@ -41,9 +39,14 @@ export default function CreatePostCard (props) {
             return
         }
 
-        console.log(post)
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
 
-		const promise = axios.post('https://projeto17-linkr-g5.herokuapp.com/posts', post);
+		const promise = axios.post('http://localhost:5000/posts', post, config);
 		promise.then((res) => {
 			alert(res.data);
             setIsLoading(false);
@@ -57,10 +60,7 @@ export default function CreatePostCard (props) {
 
     return (
         <Card>
-            {/*<img src={localStorage.getItem('token')} />
-            seria a image do user que teria sido guardada no localStorage
-    ao logar */}
-            <img src={dog} />
+            <img src={UserInfo.picture} />
             <CardContent>
                 <h1> 
                     What are you going to share today?

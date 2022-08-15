@@ -12,12 +12,19 @@ import Modal from './Modal';
 export default function TimeLine() {
     const navigate = useNavigate();
     const { isModalVisible, deleteId, setDeleteId } = useContext(UserContext)
+    const UserInfo = JSON. parse(localStorage.getItem('UserInfo'));
 
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
         const URL = "https://projeto17-linkr-g5.herokuapp.com/posts";
-        const promise = axios.get(URL);
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
+        const promise = axios.get(URL, config);
         promise.then((res)=> {
             setPosts(res.data);
         })
