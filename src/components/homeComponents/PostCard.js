@@ -1,4 +1,4 @@
-import React, { useState, useContext, useState} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from 'styled-components';
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from 'react-router-dom';
@@ -13,10 +13,11 @@ import ReactTooltip from "react-tooltip";
 export default function PostCard ( {post} ) {
     const navigate = useNavigate();
     const { deleteId, setDeleteId, setIsModalVisible } = useContext(UserContext);   
+    const token = null;
 
-    // const headers = {
-    //     Authorization: `Bearer ${token}`,
-    // }
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    }
     
     const [likes, setLikes] = useState(null);
     const [liked, setLiked] = useState(false);
@@ -74,9 +75,9 @@ export default function PostCard ( {post} ) {
     }    
 
     return (
-        <Card>
-            <img src={post.userPicture} alt=""/>
-            <PerfilAndLikes>              
+        <Card>            
+            <PerfilAndLikes>     
+                <img src={post.userPicture} alt=""/>         
                 {(liked)? 
                     <button  className={(likeloading)? 'loading': 'red'} disabled={likeloading}>
                         <ion-icon name="heart" id={post.id} onClick={(e) => {if(!likeloading){deleteLike(e.target.id)}}}></ion-icon> 

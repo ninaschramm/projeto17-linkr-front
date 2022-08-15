@@ -7,6 +7,7 @@ import SingIn from './pages/SingIn';
 import SingUp from './pages/SingUp';
 import HomePage from './pages/HomePage';
 import HashtagTimeLine from './components/homeComponents/HashtagTimeLine';
+import UserTimeLine from './components/homeComponents/UserTimeLine';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
 					<Route path="/sign-up" element={<SingUp />} />
 					<Route path="/timeline" element={<HomePage />} />
 					<Route path="/hashtag/:hashtag" element={<HashtagTimeLine />} />
+					<Route path="/user/:id" element={<UserTimeLine />} />
 				</Routes>
 			</BrowserRouter>
 		</UserContext.Provider>
