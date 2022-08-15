@@ -20,7 +20,9 @@ export default function Modal( {id} ){
         }
         console.log(payload)     
 		
-        const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, payload);
+        const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, {            
+            data: payload
+          });
         promise.then((res) => 
         console.log(res),
         setIsModalVisible(false),   

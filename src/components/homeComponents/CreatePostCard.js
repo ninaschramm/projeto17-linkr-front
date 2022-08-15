@@ -38,7 +38,7 @@ export default function CreatePostCard (props) {
         }
 
         console.log(post)
-		const promise = axios.post('http://localhost:5000/posts', post);
+		const promise = axios.post('http://localhost:5001/posts', post);
 		promise.then((res) => {
 			alert(res.data);
             window.location.reload();
