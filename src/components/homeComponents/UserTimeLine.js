@@ -15,12 +15,15 @@ export default function UserTimeLine() {
     let {id} = useParams();
 
     const [posts, setPosts] = useState(null);
+    const [name, setName] = useState(null);
 
     useEffect(() => {
         const URL = `${process.env.REACT_APP_API_BASE_URL}/user/${id}`;
         const promise = axios.get(URL);
         promise.then((res)=> {
             setPosts(res.data);
+            console.log(res.data)
+            setName(res.data[0].username)
         })
         promise.catch(() => {setPosts('error')});
     }, [])
@@ -47,8 +50,7 @@ export default function UserTimeLine() {
 		<Page>
             {isModalVisible ? <Modal id={deleteId} /> : null}
 			<Container>
-                <Title>timeline</Title>
-                <CreatePostCard />
+                <Title>{name ? `${name}'s Posts` : null}</Title>                
                 {callShowPosts}
 			</Container>
             <div>
