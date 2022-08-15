@@ -4,37 +4,36 @@ import axios from 'axios';
 import UserContext from "../../contexts/UserContext";
 import { useNavigate } from 'react-router-dom';
 
-export default function Modal(id){
+export default function Modal( {id} ){
 
-    const setIsModalVisible = useContext(UserContext)
+    const {setIsModalVisible} = useContext(UserContext)
     const navigate = useNavigate();
+    const token = null;
 
     const headers = {
-        Authorization: `Bearer ${null}`,
+        Authorization: `Bearer ${token}`,
     }
 
     async function deletePost(req, res){        
-        const body = {
+        const payload = {
             id: parseInt(id)
         }
-        console.log(body)     
+        console.log(payload)     
 		
-        try {
-            await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, body, {headers});
-            console.log(res);
-            setIsModalVisible(false)   
-            navigate("/home")
-        }
-        catch(err) {
-            alert("Algo deu errado!")
-            console.log(err.response.data)
-        }   
+        const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, payload);
+        promise.then((res) => 
+        console.log(res),
+        setIsModalVisible(false),   
+        navigate("/timeline"));        
+        promise.catch((err) => {
+			console.log(err.response.data);
+		});
     }
 
     return (
     <ModalBG>
         <ModalCard>
-         <h1>Are you sure you want to delete this post?</h1> 
+         <h1>Are you sure you want <br></br>to delete this post?</h1> 
          <CancelButton onClick={() => setIsModalVisible(false)}>No, go back</CancelButton> <ConfirmButton onClick={deletePost}>Yes, delete it</ConfirmButton>
         </ModalCard>
     </ModalBG>
@@ -49,6 +48,8 @@ const ModalBG = styled.div`
     background-color: rgba(255, 255, 255, 0.9);
     display: flex;
     justify-content: center;
+    align-items: center;
+    z-index: 3;
 `
 
 const ModalCard = styled.div`
@@ -63,6 +64,10 @@ const ModalCard = styled.div`
     line-height: 41px;
     text-align: center;
     color: #FFFFFF;
+    padding: 38px;
+    h1 {
+        margin-bottom: 38px;
+    }
 `
 
 const CancelButton = styled.button`
@@ -70,8 +75,31 @@ const CancelButton = styled.button`
     height: 37px;
     background: #FFFFFF;
     border-radius: 5px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #1877F2;
+    border: 0;
+    margin-right: 14px;
+    cursor: pointer;
+    :hover {
+        filter: brightness(150%);
+    }
 `
 
 const ConfirmButton = styled.button`
-
+    width: 134px;
+    height: 37px;
+    background: #1877F2;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFFFFF;
+    border: 0;
+    margin-left: 14px;
+    cursor: pointer;
+    :hover {
+        filter: brightness(150%);
+    }
 `

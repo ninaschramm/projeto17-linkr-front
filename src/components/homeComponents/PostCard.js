@@ -9,11 +9,12 @@ import UserContext from '../../contexts/UserContext';
 
 export default function PostCard ( {post} ) {
     const navigate = useNavigate();
-    const {setDeleteId, setIsModalVisible} = useContext(UserContext);   
+    const { deleteId, setDeleteId, setIsModalVisible } = useContext(UserContext);   
 
     function openModal(id) {
         setIsModalVisible(true)
         setDeleteId(id)
+        window.scrollTo(0, 0)
     }    
 
     return (

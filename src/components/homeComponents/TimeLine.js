@@ -11,12 +11,12 @@ import Modal from './Modal';
 
 export default function TimeLine() {
     const navigate = useNavigate();
-    const {isModalVisible} = useContext(UserContext)
+    const { isModalVisible, deleteId, setDeleteId } = useContext(UserContext)
 
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/posts`;
+        const URL = "https://projeto17-linkr-g5.herokuapp.com/posts";
         const promise = axios.get(URL);
         promise.then((res)=> {
             setPosts(res.data);
@@ -25,7 +25,6 @@ export default function TimeLine() {
     }, [])
 
     function showPosts() {
-        console.log(posts)
         if (posts === null) {
             return <ThreeDots width={51} height={13} color="#D1D1D4" />
         } 
@@ -36,7 +35,7 @@ export default function TimeLine() {
             return <>An error occured while trying to fetch the posts, please refresh the page.</>
         }
         else {
-            return (posts.map((post, index) => <PostCard key={index} post={post} />))
+            return (posts.map((post, index) => {if(post != null){return <PostCard key={index} post={post}/>}}))
         }
     }
 
@@ -45,7 +44,7 @@ export default function TimeLine() {
 
 	return (
 		<Page>
-            {isModalVisible ? <Modal /> : null}
+            {isModalVisible ? <Modal id={deleteId} /> : null}
 			<Container>
                 <Title>timeline</Title>
                 <CreatePostCard />
