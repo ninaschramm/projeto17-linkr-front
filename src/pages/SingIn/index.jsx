@@ -21,7 +21,7 @@ export default function SingIn() {
 		e.preventDefault();
 		setDisable(true);
 
-		const promise = axios.post(`http://localhost:5000/singin`,{
+		const promise = axios.post(`http://localhost:5000/signin`,{
 			email,
 			password
 		});
@@ -31,11 +31,11 @@ export default function SingIn() {
 			console.log(data);
 			localStorage.setItem(
 				"UserInfo",
-				JSON.stringify({token: data.token, img: data.img})
+				JSON.stringify({token: data.token, picture: data.picture})
 			);
 			setUser(data);
 			setDisable(false);
-			return navigate("/home")
+			return navigate("/timeline")
 		});
 		promise.catch((e) => {
 			console.log(e.response.data);

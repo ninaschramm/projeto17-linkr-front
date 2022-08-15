@@ -20,7 +20,7 @@ export default function SingUp() {
         e.preventDefault();
         setDisable(true);
 
-        const promise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/signup`,{
+        const promise = axios.post(`http://localhost:5000/signup`,{
             email: email,
             username: username,
             password: password,

@@ -12,7 +12,7 @@ export default function HashtagBar() {
     const [hashtags, setHashtags] = useState(null);
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/hashtags`;
+        const URL = "https://projeto17-linkr-g5.herokuapp.com/hashtags";
         const promise = axios.get(URL);
         promise.then((res)=> {
             setHashtags(res.data);
@@ -75,8 +75,7 @@ export default function HashtagBar() {
 }
 
 const Hashtags = styled.div`
-    position: absolute;
-    top: 232px;
+    margin-top: 242px;
     margin-left: 25px;
     width: 301px;
     height: 406px;
@@ -100,7 +99,7 @@ const Hashtags = styled.div`
         cursor: pointer;
     }
 
-    @media (max-width: 430px) {
+    @media (max-width: 988px) {
         display: none;
     }
 `
