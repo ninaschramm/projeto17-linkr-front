@@ -42,12 +42,12 @@ export default function CreatePostCard (props) {
         }
 
         console.log(post)
+
 		const promise = axios.post('https://projeto17-linkr-g5.herokuapp.com/posts', post);
 		promise.then((res) => {
 			alert(res.data);
             setIsLoading(false);
-            window.location.reload();
-            
+            window.location.reload();            
 		});
 		promise.catch((err) => {
 			alert(err.response.data);

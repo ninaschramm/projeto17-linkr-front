@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from  'react-loader-spinner';
 import PostCard from './PostCard';
 import HashtagBar from './HashtagBar';
 import CreatePostCard from './CreatePostCard';
+import UserContext from '../../contexts/UserContext';
+import Modal from './Modal';
 
 export default function TimeLine() {
     const navigate = useNavigate();
+    const { isModalVisible, deleteId, setDeleteId } = useContext(UserContext)
 
     const [posts, setPosts] = useState(null);
 
@@ -41,6 +44,7 @@ export default function TimeLine() {
 
 	return (
 		<Page>
+            {isModalVisible ? <Modal id={deleteId} /> : null}
 			<Container>
                 <Title>timeline</Title>
                 <CreatePostCard />

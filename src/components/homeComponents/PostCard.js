@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext, useState} from "react";
 import styled from 'styled-components';
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from 'react-router-dom';
 import Snippet from "./Snippet";
 import axios from "axios";
+import UserContext from '../../contexts/UserContext';
 import ReactTooltip from "react-tooltip";
 
 
-export default function PostCard (props) {
+
+
+export default function PostCard ( {post} ) {
     const navigate = useNavigate();
+    const { deleteId, setDeleteId, setIsModalVisible } = useContext(UserContext);   
 
     // const headers = {
     //     Authorization: `Bearer ${token}`,
@@ -23,7 +27,7 @@ export default function PostCard (props) {
     }, [])
 
     function getLikes(){
-        const URL = "http://localhost:5000/like/"+props.post.id;
+        const URL = "http://localhost:5000/like/"+post.id;
         const promise = axios.get(URL);
         promise.then((res)=> {
             setLikes(res.data);
@@ -62,32 +66,24 @@ export default function PostCard (props) {
 		});
     }
 
-    function deletePost(id){
-        const body = {
-            id: parseInt(id)
-        }
-        console.log(body)
-        const promise = axios.delete('http://localhost:5000/posts', body, { });
-		promise.then((res) => {
-			console.log(res);
-           // window.location.reload();            
-		});
-		promise.catch((err) => {
-			alert(err.response.data);
-		});
-    }
+
+    function openModal(id) {
+        setIsModalVisible(true)
+        setDeleteId(id)
+        window.scrollTo(0, 0)
+    }    
 
     return (
         <Card>
-            <PerfilAndLikes>
-                <img src={props.post.userPicture} alt=""/>
+            <img src={post.userPicture} alt=""/>
+            <PerfilAndLikes>              
                 {(liked)? 
                     <button  className={(likeloading)? 'loading': 'red'} disabled={likeloading}>
-                        <ion-icon name="heart" id={props.post.id} onClick={(e) => {if(!likeloading){deleteLike(e.target.id)}}}></ion-icon> 
+                        <ion-icon name="heart" id={post.id} onClick={(e) => {if(!likeloading){deleteLike(e.target.id)}}}></ion-icon> 
                     </button>  
                     : 
                     <button className={(likeloading)? 'loading' : ''} disabled={likeloading}>
-                        <ion-icon name="heart-outline"  id={props.post.id} onClick={(e) => {if(!likeloading){addLike(e.target.id)}}} ></ion-icon> 
+                        <ion-icon name="heart-outline"  id={post.id} onClick={(e) => {if(!likeloading){addLike(e.target.id)}}} ></ion-icon> 
                     </button>  
                     }
 
@@ -113,17 +109,17 @@ export default function PostCard (props) {
             <CardContent>
                 <TopLine>
                     <h1> 
-                    {props.post.username}
+                    {post.username}
                     </h1>    
-                    <ion-icon id={props.post.id} onClick={(e) => deletePost(e.target.id)} name="trash-outline"></ion-icon>    
+                    <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon>    
                 </TopLine>                       
                 <p>
                     <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
-                    {props.post.text}
+                    {post.text}
                     </ReactHashtag>
                 </p>
-                <a href={props.post.link} target="_blank" rel="noreferrer">
-                    <Snippet image={props.post.postImage} title={props.post.postTitle} description={props.post.postDescription} link={props.post.link}/>
+                <a href={post.link} target="_blank" rel="noreferrer">
+                    <Snippet image={post.postImage} title={post.postTitle} description={post.postDescription} link={post.link}/>
                 </a>
             </CardContent>
         </Card>    
