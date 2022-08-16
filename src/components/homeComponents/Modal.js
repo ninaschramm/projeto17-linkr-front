@@ -8,7 +8,8 @@ export default function Modal( {id} ){
 
     const {setIsModalVisible} = useContext(UserContext)
     const navigate = useNavigate();
-    const token = null;
+    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
+    const token = UserInfo.token;
 
     const headers = {
         Authorization: `Bearer ${token}`,
@@ -20,7 +21,7 @@ export default function Modal( {id} ){
         }
         console.log(payload)     
 		
-        const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, {            
+        const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, {   headers: headers,         
             data: payload
           });
         promise.then((res) => 

@@ -17,18 +17,18 @@ export default function TimeLine() {
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
-        const URL = "https://projeto17-linkr-g5.herokuapp.com/posts";
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/posts`;
         const config = 
         {
             headers:{
-            'Authorization': `Bearer ${UserInfo.token}` 
+            'Authorization': `Bearer ${UserInfo.token}`,
             }
         }
         const promise = axios.get(URL, config);
         promise.then((res)=> {
             setPosts(res.data);
         })
-        promise.catch(() => {setPosts('error')});
+        promise.catch((err) => {setPosts('error'); console.log(err.response.data)});
     }, [])
 
     function showPosts() {

@@ -29,7 +29,7 @@ export default function PostCard ( {post} ) {
     }, [])
 
     function getLikes(){
-        const URL = "http://localhost:5000/like/"+post.id;
+        const URL = `${process.env.REACT_APP_API_BASE_URL}`+post.id;
         const promise = axios.get(URL);
         promise.then((res)=> {
             setLikes(res.data);
@@ -39,7 +39,7 @@ export default function PostCard ( {post} ) {
 
     function addLike(id){
         setLikeloading(true);
-        const URL = "http://localhost:5000/like/"+ id;
+        const URL = `${process.env.REACT_APP_API_BASE_URL}`+id;
         const promise = axios.post(URL, headers);
         console.log(URL);
         promise.then(() => {
@@ -55,7 +55,7 @@ export default function PostCard ( {post} ) {
 
     function deleteLike(id){
         setLikeloading(true);
-        const URL = "http://localhost:5000/like/"+ id;
+        const URL = `${process.env.REACT_APP_API_BASE_URL}`+id;
         const promise = axios.delete(URL, headers);
         promise.then(() => {
             getLikes();

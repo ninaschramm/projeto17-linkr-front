@@ -137,6 +137,7 @@ const Img = styled.img`
         border-radius: 26.5px;
         background-position: center;
         background-size: cover;
+        object-fit: cover;
 `
 
 const BrandLogo = styled.div`
