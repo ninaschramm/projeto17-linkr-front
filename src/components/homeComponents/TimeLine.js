@@ -17,7 +17,7 @@ export default function TimeLine() {
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
-        const URL = "https://projeto17-linkr-g5.herokuapp.com/posts";
+        const URL = "http://localhost:5000/posts";
         const config = 
         {
             headers:{
