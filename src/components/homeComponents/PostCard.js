@@ -161,7 +161,7 @@ export default function PostCard ( {post} ) {
                         <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon>
                     </div> 
                 </TopLine>                       
-                <p className={(editing) ? 'editing' : ''}>
+                <p>
                     {editing ? 
                     <form onSubmit={editPost}>
                         <input
@@ -225,16 +225,6 @@ const Card = styled.div `
             width: 100%;
             border-radius: 0;
         }
-
-        /*.editing {
-            color: black;
-            width: 100%;
-            border-radius: 7px;
-            padding: 8px;
-            border: none;
-            font-weight: 400;
-            background-color: white;
-        }*/
     `
 const PerfilAndLikes = styled.div`
     display: flex;
@@ -279,6 +269,15 @@ const CardContent = styled.div`
     flex-direction: column;
     gap: 10px;
     overflow: hidden;
+
+    input {
+        width: 100%;
+        height: 50px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 5px;
+    }
 `
 
 const TopLine = styled.div`
