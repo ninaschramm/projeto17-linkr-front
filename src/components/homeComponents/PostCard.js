@@ -19,6 +19,8 @@ export default function PostCard ( {post} ) {
     const [liked, setLiked] = useState(false);
     const [likeloading, setLikeloading] = useState(false);
     const [editing, setEditing] = useState(false);
+    const [postEdit, setPostEdit] = useState(post.text);
+    const [disable, setDisable] = useState(false);
 
     useEffect(() => {
         getLikes();
@@ -92,6 +94,28 @@ export default function PostCard ( {post} ) {
         window.scrollTo(0, 0)
     }    
 
+    function editPost(e){
+        e.preventDefault();
+        setDisable(true);
+
+        const promise = axios.put(`http://localhost:5000/edit-post`, {
+            postId: post.id,
+            text: postEdit,
+        });
+
+        promise.then(() => {
+            setDisable(false);
+            setEditing(!editing);
+            return navigate("/timeline");
+        });
+
+        promise.catch((e) => {
+            console.log(e.response.data);
+            setDisable(false);
+            alert(e.response.data + ', não foi possível editar sua postagem');
+        })
+    }
+
     return (
         <Card>            
             <PerfilAndLikes>     
@@ -133,23 +157,23 @@ export default function PostCard ( {post} ) {
                     {post.username}
                     </h1>  
                     <div>
-                        <ion-icon onClick={(e) => setEditing(!editing)} name="pencil-outline"></ion-icon>
+                        <ion-icon onClick={() => setEditing(!editing)} name="pencil-outline"></ion-icon>
                         <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon>
                     </div> 
                 </TopLine>                       
                 <p className={(editing) ? 'editing' : ''}>
                     {editing ? 
-                    <input
-                        type="text"
-                        placeholder="username"
-                        //value={username}
-                        //onChange={e => setUsername(e.target.value)}
-                        //disabled = {disable}
-                        //required
-                    >
-                    </input> : 
+                    <form onSubmit={editPost}>
+                        <input
+                            type="text"
+                            value={postEdit}
+                            onChange={e => setPostEdit(e.target.value)}
+                            disabled = {disable}
+                        >
+                        </input>
+                    </form> : 
                         <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
-                        {post.text}
+                        {postEdit}
                         </ReactHashtag>
                     }
 
