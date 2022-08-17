@@ -18,6 +18,7 @@ export default function PostCard ( {post} ) {
     const [likes, setLikes] = useState(null);
     const [liked, setLiked] = useState(false);
     const [likeloading, setLikeloading] = useState(false);
+    const [editing, setEditing] = useState(false);
 
     useEffect(() => {
         getLikes();
@@ -130,13 +131,28 @@ export default function PostCard ( {post} ) {
                 <TopLine>
                     <h1> 
                     {post.username}
-                    </h1>    
-                    <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon>    
+                    </h1>  
+                    <div>
+                        <ion-icon onClick={(e) => setEditing(!editing)} name="pencil-outline"></ion-icon>
+                        <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon>
+                    </div> 
                 </TopLine>                       
-                <p>
-                    <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
-                    {post.text}
-                    </ReactHashtag>
+                <p className={(editing) ? 'editing' : ''}>
+                    {editing ? 
+                    <input
+                        type="text"
+                        placeholder="username"
+                        //value={username}
+                        //onChange={e => setUsername(e.target.value)}
+                        //disabled = {disable}
+                        //required
+                    >
+                    </input> : 
+                        <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
+                        {post.text}
+                        </ReactHashtag>
+                    }
+
                 </p>
                 <a href={post.link} target="_blank" rel="noreferrer">
                     <Snippet image={post.postImage} title={post.postTitle} description={post.postDescription} link={post.link}/>
@@ -185,6 +201,16 @@ const Card = styled.div `
             width: 100%;
             border-radius: 0;
         }
+
+        /*.editing {
+            color: black;
+            width: 100%;
+            border-radius: 7px;
+            padding: 8px;
+            border: none;
+            font-weight: 400;
+            background-color: white;
+        }*/
     `
 const PerfilAndLikes = styled.div`
     display: flex;
@@ -237,6 +263,12 @@ const TopLine = styled.div`
 
     ion-icon {
         cursor: pointer;
+    }
+
+    div {
+        width: 40px;
+        display: flex;
+        justify-content: space-between;
     }
     `
 
