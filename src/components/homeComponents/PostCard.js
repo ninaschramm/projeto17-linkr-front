@@ -108,10 +108,10 @@ export default function PostCard ( {post} ) {
                 <span>
                     <a  data-for='likes' data-tip={
                         (likes)? 
-                            (likes.usernames.length > 0)? 
-                                (likes.usernames.length > 1)? 
-                                    (likes.usernames.length > 2)?  
-                                        (likes.usernames.length > 3)? 
+                            (likes.likesTotal > 0)? 
+                                (likes.likesTotal > 1)? 
+                                    (likes.likesTotal > 2)?  
+                                        (likes.likesTotal > 3)? 
                                             `${(liked)? `você, ${likes.usernames[0]} e outras ${likes.likesTotal - 2} pessoas` : `${likes.usernames[0]}, ${likes.usernames[1]} e outras ${likes.likesTotal - 2} pessoas`}`
                                         :`${(liked)? `você, ${likes.usernames[0]} e ${likes.usernames[1]}` : `${likes.usernames[0]}, ${likes.usernames[1]} e outra 1 pessoa`}`
                                     :`${(liked)? `você e ${likes.usernames[0]}`: `${likes.usernames[0]} e ${likes.usernames[1]}`}`
