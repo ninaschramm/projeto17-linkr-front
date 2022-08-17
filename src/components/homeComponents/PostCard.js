@@ -14,11 +14,6 @@ export default function PostCard ( {post} ) {
     const navigate = useNavigate();
     const { deleteId, setDeleteId, setIsModalVisible } = useContext(UserContext);   
     const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
-    const token = UserInfo.token;
-
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    }
     
     const [likes, setLikes] = useState(null);
     const [liked, setLiked] = useState(false);
@@ -28,20 +23,35 @@ export default function PostCard ( {post} ) {
         getLikes();
     }, [])
 
+
     function getLikes(){
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
         const URL = "http://localhost:5000/like/"+post.id;
-        const promise = axios.get(URL);
+        const promise = axios.get(URL, config);
         promise.then((res)=> {
             setLikes(res.data);
+            setLiked(res.data.liked);
         })
         promise.catch(() => {console.log('error on likes request')});
     }
 
     function addLike(id){
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
         setLikeloading(true);
         const URL = "http://localhost:5000/like/"+ id;
-        const promise = axios.post(URL, headers);
-        console.log(URL);
+        const bodyfake = {};
+        const promise = axios.post(URL, bodyfake, config);
+        
         promise.then(() => {
             getLikes();
             setLiked(true);
@@ -54,9 +64,15 @@ export default function PostCard ( {post} ) {
     }
 
     function deleteLike(id){
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
         setLikeloading(true);
         const URL = "http://localhost:5000/like/"+ id;
-        const promise = axios.delete(URL, headers);
+        const promise = axios.delete(URL, config);
         promise.then(() => {
             getLikes();
             setLiked(false);
@@ -90,20 +106,22 @@ export default function PostCard ( {post} ) {
                     }
 
                 <span>
-                    <a  data-for='qualquer' data-tip={
+                    <a  data-for='likes' data-tip={
                         (likes)? 
                             (likes.usernames.length > 0)? 
                                 (likes.usernames.length > 1)? 
-                                    (likes.usernames.length > 2)?   
-                                        `${(liked)? 'você, ' : ''}${likes.usernames[0]}, ${likes.usernames[1]} e outras ${likes.likesTotal - 2} pessoas`
-                                    :`${(liked)? 'você, ': ''}${likes.usernames[0]} e ${likes.usernames[1]}`
-                                : `${(liked)? 'você e ': ''} ${likes.usernames[0]}` 
+                                    (likes.usernames.length > 2)?  
+                                        (likes.usernames.length > 3)? 
+                                            `${(liked)? `você, ${likes.usernames[0]} e outras ${likes.likesTotal - 2} pessoas` : `${likes.usernames[0]}, ${likes.usernames[1]} e outras ${likes.likesTotal - 2} pessoas`}`
+                                        :`${(liked)? `você, ${likes.usernames[0]} e ${likes.usernames[1]}` : `${likes.usernames[0]}, ${likes.usernames[1]} e outra 1 pessoa`}`
+                                    :`${(liked)? `você e ${likes.usernames[0]}`: `${likes.usernames[0]} e ${likes.usernames[1]}`}`
+                                : `${(liked)? 'você': `${likes.usernames[0]}`}` 
                             : [''] 
                         : ['']   
                     }>
                         {(likes)? likes.likesTotal : '0'} likes
                     </a>
-                    <ReactTooltip id='qualquer' type="light" place="bottom" effect="solid" 
+                    <ReactTooltip id='likes' type="light" place="bottom" effect="solid" 
                         getContent={(dataTip) => `${dataTip}`}
                     />
                 </span>

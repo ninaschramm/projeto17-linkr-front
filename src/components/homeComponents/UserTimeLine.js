@@ -18,7 +18,7 @@ export default function UserTimeLine() {
     const [name, setName] = useState(null);
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/user/${id}`;
+        const URL = `http://localhost:5000/user/${id}`;
         const promise = axios.get(URL);
         promise.then((res)=> {
             setPosts(res.data);
