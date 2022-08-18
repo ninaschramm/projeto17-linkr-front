@@ -8,7 +8,8 @@ export default function Modal( {id} ){
 
     const {setIsModalVisible} = useContext(UserContext)
     const navigate = useNavigate();
-    const token = null;
+    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
+    const token = UserInfo.token;
 
     const headers = {
         Authorization: `Bearer ${token}`,
@@ -20,16 +21,22 @@ export default function Modal( {id} ){
         }
         console.log(payload)     
 		
-        const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, {            
+        const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, {   headers: headers,         
             data: payload
           });
-        promise.then((res) => 
-        console.log(res),
-        setIsModalVisible(false),   
-        navigate("/timeline"));        
-        promise.catch((err) => {
-			console.log(err.response.data);
-		});
+        promise.then((res) => postDeleted(res))   
+        promise.catch((err) => 
+			console.log(err.response.data),
+            setIsModalVisible(false),
+            alert("It wasn't possible to delete this post")
+            
+		);
+    }
+
+    function postDeleted(res) {
+        console.log(res);
+        setIsModalVisible(false);
+        window.location.reload()
     }
 
     return (

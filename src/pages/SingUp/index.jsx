@@ -19,7 +19,7 @@ export default function SingUp() {
         e.preventDefault();
         setDisable(true);
 
-        const promise = axios.post(`http://localhost:5000/signup`,{
+        const promise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/signup`,{
             email: email,
             username: username,
             password: password,
@@ -80,7 +80,7 @@ export default function SingUp() {
 						required
 					/>
 					{disable === false ?
-						(<button type="submit">Sing Up</button>) :
+						(<button type="submit">Sign Up</button>) :
 						(<button type="submit" className="disabled-button" disabled = {true}>
 							<ThreeDots
 								color='#a0a0a0'
