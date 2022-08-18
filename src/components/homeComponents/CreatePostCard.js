@@ -2,9 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import styled from 'styled-components';
-import ReactHashtag from "@mdnm/react-hashtag";
-import { Link, useNavigate } from 'react-router-dom';
-import dog from '../../assets/dog.svg'
+import { useNavigate } from 'react-router-dom';
 
 export default function CreatePostCard (props) {
 
@@ -13,7 +11,7 @@ export default function CreatePostCard (props) {
     const [link, setLink] = useState('');
 	const [text, setText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const UserInfo = JSON. parse(localStorage.getItem('UserInfo'));
+    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
 
 	useEffect(() => {
 
@@ -60,7 +58,7 @@ export default function CreatePostCard (props) {
 
     return (
         <Card>
-            <img src={UserInfo.picture} />
+            <img src={UserInfo.picture} alt=""/>
             <CardContent>
                 <h1> 
                     What are you going to share today?
