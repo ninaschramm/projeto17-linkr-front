@@ -81,7 +81,7 @@ export default function SingUp() {
 						required
 					/>
 					{disable === false ?
-						(<button type="submit">Sing Up</button>) :
+						(<button type="submit">Sign Up</button>) :
 						(<button type="submit" className="disabled-button" disabled = {true}>
 							<ThreeDots
 								color='#a0a0a0'

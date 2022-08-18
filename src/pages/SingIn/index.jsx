@@ -31,7 +31,7 @@ export default function SingIn() {
 			console.log(data);
 			localStorage.setItem(
 				"UserInfo",
-				JSON.stringify({token: data.token, picture: data.picture})
+				JSON.stringify({token: data.token, picture: data.picture, userId: data.userId})
 			);
 			setUser(data);
 			setDisable(false);

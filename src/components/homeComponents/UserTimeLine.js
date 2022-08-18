@@ -23,7 +23,7 @@ export default function UserTimeLine() {
         const config = 
         {
             headers:{
-            'Authorization': `Bearer ${UserInfo.token}` 
+            'Authorization': `Bearer ${UserInfo.token}`
             }
         }
         const promise = axios.get(URL, config);

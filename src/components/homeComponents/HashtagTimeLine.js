@@ -13,13 +13,20 @@ export default function HashtagTimeLine() {
     const navigate = useNavigate();
     const { isModalVisible, deleteId, setDeleteId } = useContext(UserContext)
     let {hashtag} = useParams();
+    const UserInfo = JSON. parse(localStorage.getItem('UserInfo'));
 
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
         console.log(hashtag)
         const URL = `${process.env.REACT_APP_API_BASE_URL}/hashtags/${hashtag}`;
-        const promise = axios.get(URL);
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}`,
+            }
+        }
+        const promise = axios.get(URL, config);
         promise.then((res)=> {
             setPosts(res.data);
         })
@@ -48,8 +55,7 @@ export default function HashtagTimeLine() {
 		<Page>
             {isModalVisible ? <Modal id={deleteId} /> : null}
 			<Container>
-                <Title>timeline</Title>
-                <CreatePostCard />
+                <Title>#hashtag</Title>
                 {callShowPosts}
 			</Container>
             <div>

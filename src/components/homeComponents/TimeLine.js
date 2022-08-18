@@ -21,14 +21,14 @@ export default function TimeLine() {
         const config = 
         {
             headers:{
-            'Authorization': `Bearer ${UserInfo.token}` 
+            'Authorization': `Bearer ${UserInfo.token}`,
             }
         }
         const promise = axios.get(URL, config);
         promise.then((res)=> {
             setPosts(res.data);
         })
-        promise.catch(() => {setPosts('error')});
+        promise.catch((err) => {setPosts('error'); console.log(err.response.data)});
     }, [])
 
     function showPosts() {
