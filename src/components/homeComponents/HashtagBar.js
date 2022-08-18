@@ -13,13 +13,8 @@ export default function HashtagBar() {
 
     useEffect(() => {
         const URL = `${process.env.REACT_APP_API_BASE_URL}/hashtags`;
-        const config = 
-        {
-            headers:{
-            'Authorization': `Bearer ${UserInfo.token}`,
-            }
-        }
-        const promise = axios.get(URL, config);
+        const promise = axios.get(URL);
+
         promise.then((res)=> {
             setHashtags(res.data);
         });
@@ -81,7 +76,7 @@ export default function HashtagBar() {
 }
 
 const Hashtags = styled.div`
-    margin-top: 242px;
+    margin-top: 45px;
     margin-left: 25px;
     width: 301px;
     height: 406px;
