@@ -17,7 +17,7 @@ export default function TimeLine() {
     const [posts, setPosts] = useState(null);
 
     useEffect(() => {
-        const URL = "http://localhost:5000/posts";
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/posts`;
         const config = 
         {
             headers:{

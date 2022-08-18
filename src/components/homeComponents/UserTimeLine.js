@@ -5,24 +5,30 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ThreeDots } from  'react-loader-spinner';
 import PostCard from './PostCard';
 import HashtagBar from './HashtagBar';
-import CreatePostCard from './CreatePostCard';
 import UserContext from '../../contexts/UserContext';
 import Modal from './Modal';
+import FollowButton from './FollowButton';
 
 export default function UserTimeLine() {
     const navigate = useNavigate();
     const { isModalVisible, deleteId, setDeleteId } = useContext(UserContext)
     let {id} = useParams();
-
     const [posts, setPosts] = useState(null);
     const [name, setName] = useState(null);
+    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
+
 
     useEffect(() => {
-        const URL = `http://localhost:5000/user/${id}`;
-        const promise = axios.get(URL);
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/user/${id}`;
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
+        const promise = axios.get(URL, config);
         promise.then((res)=> {
             setPosts(res.data);
-            console.log(res.data)
             setName(res.data[0].username)
         })
         promise.catch(() => {setPosts('error')});
@@ -43,6 +49,8 @@ export default function UserTimeLine() {
         }
     }
 
+    
+
 
     const callShowPosts = showPosts()
 
@@ -50,10 +58,11 @@ export default function UserTimeLine() {
 		<Page>
             {isModalVisible ? <Modal id={deleteId} /> : null}
 			<Container>
-                <Title>{name ? `${name}'s Posts` : null}</Title>                
+                <Title>{name ? `${name}'s Posts` : null} </Title>                
                 {callShowPosts}
 			</Container>
             <div>
+                <FollowButton id={id} />
                 <HashtagBar />
             </div>          
 		</Page>
@@ -77,6 +86,7 @@ const Container = styled.div`
 `
 
 const Title = styled.div`
+    width: 100%;
     font-family: 'Oswald';
     font-style: normal;
     font-weight: 700;
@@ -84,4 +94,5 @@ const Title = styled.div`
     line-height: 64px;
     color: #FFFFFF;
     margin-bottom: 43px;
+    justify-content: space-between;
 `

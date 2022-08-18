@@ -41,7 +41,7 @@ export default function Navbar() {
     function handleSearch (){
 
         if(letters.length >= 3){
-            const URL = `http://localhost:5000/serachUsers/${letters}`
+            const URL = `${process.env.REACT_APP_API_BASE_URL}/serachUsers/${letters}`
             const config = 
             {
                 headers:{

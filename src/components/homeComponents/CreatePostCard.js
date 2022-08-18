@@ -46,7 +46,7 @@ export default function CreatePostCard (props) {
             }
         }
 
-		const promise = axios.post('http://localhost:5000/posts', post, config);
+		const promise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/posts`, post, config);
 		promise.then((res) => {
 			alert(res.data);
             setIsLoading(false);

@@ -13,8 +13,7 @@ import ReactTooltip from "react-tooltip";
 export default function PostCard ( {post} ) {
     const navigate = useNavigate();
     const { deleteId, setDeleteId, setIsModalVisible } = useContext(UserContext);   
-    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
-    
+    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));    
     const [likes, setLikes] = useState(null);
     const [liked, setLiked] = useState(false);
     const [likeloading, setLikeloading] = useState(false);
@@ -34,7 +33,7 @@ export default function PostCard ( {post} ) {
             'Authorization': `Bearer ${UserInfo.token}` 
             }
         }
-        const URL = "http://localhost:5000/like/"+post.id;
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/like/`+post.id;
         const promise = axios.get(URL, config);
         promise.then((res)=> {
             setLikes(res.data);
@@ -51,7 +50,7 @@ export default function PostCard ( {post} ) {
             }
         }
         setLikeloading(true);
-        const URL = "http://localhost:5000/like/"+ id;
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/like/`+ id;
         const bodyfake = {};
         const promise = axios.post(URL, bodyfake, config);
         
@@ -74,7 +73,7 @@ export default function PostCard ( {post} ) {
             }
         }
         setLikeloading(true);
-        const URL = "http://localhost:5000/like/"+ id;
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/like/`+ id;
         const promise = axios.delete(URL, config);
         promise.then(() => {
             getLikes();
@@ -98,7 +97,7 @@ export default function PostCard ( {post} ) {
         e.preventDefault();
         setDisable(true);
 
-        const promise = axios.put(`http://localhost:5000/edit-post`, {
+        const promise = axios.put(`${process.env.REACT_APP_API_BASE_URL}/edit-post`, {
             postId: post.id,
             text: postEdit,
         });
