@@ -21,7 +21,7 @@ export default function SingIn() {
 		e.preventDefault();
 		setDisable(true);
 
-		const promise = axios.post(`http://localhost:5000/signin`,{
+		const promise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/signin`,{
 			email,
 			password
 		});
@@ -31,7 +31,7 @@ export default function SingIn() {
 			console.log(data);
 			localStorage.setItem(
 				"UserInfo",
-				JSON.stringify({token: data.token, picture: data.picture})
+				JSON.stringify({token: data.token, picture: data.picture, userId: data.userId})
 			);
 			setUser(data);
 			setDisable(false);
