@@ -25,25 +25,37 @@ export default function PostCard ( {post} ) {
     const [likes, setLikes] = useState(null);
     const [liked, setLiked] = useState(false);
     const [likeloading, setLikeloading] = useState(false);
+    const [editing, setEditing] = useState(false);
+    const [postEdit, setPostEdit] = useState(post.text);
+    const [disable, setDisable] = useState(false);
 
     useEffect(() => {
         getLikes();
     }, [])
+
 
     function getLikes(){
         const URL = `${process.env.REACT_APP_API_BASE_URL}`+post.id;
         const promise = axios.get(URL);
         promise.then((res)=> {
             setLikes(res.data);
+            setLiked(res.data.liked);
         })
         promise.catch(() => {console.log('error on likes request')});
     }
 
     function addLike(id){
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
         setLikeloading(true);
-        const URL = `${process.env.REACT_APP_API_BASE_URL}`+id;
-        const promise = axios.post(URL, config);
-        console.log(URL);
+
+        const URL = "http://localhost:5000/like/"+ id;
+        const bodyfake = {};
+        const promise = axios.post(URL, bodyfake, config);
         promise.then(() => {
             getLikes();
             setLiked(true);
@@ -56,6 +68,12 @@ export default function PostCard ( {post} ) {
     }
 
     function deleteLike(id){
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
         setLikeloading(true);
         const URL = `${process.env.REACT_APP_API_BASE_URL}`+id;
         const promise = axios.delete(URL, config);
@@ -77,6 +95,28 @@ export default function PostCard ( {post} ) {
         window.scrollTo(0, 0)
     }    
 
+    function editPost(e){
+        e.preventDefault();
+        setDisable(true);
+
+        const promise = axios.put(`http://localhost:5000/edit-post`, {
+            postId: post.id,
+            text: postEdit,
+        });
+
+        promise.then(() => {
+            setDisable(false);
+            setEditing(!editing);
+            return navigate("/timeline");
+        });
+
+        promise.catch((e) => {
+            console.log(e.response.data);
+            setDisable(false);
+            alert(e.response.data + ', não foi possível editar sua postagem');
+        })
+    }
+
     return (
         <Card>            
             <PerfilAndLikes>     
@@ -92,20 +132,22 @@ export default function PostCard ( {post} ) {
                     }
 
                 <span>
-                    <a  data-for='qualquer' data-tip={
+                    <a  data-for='likes' data-tip={
                         (likes)? 
-                            (likes.usernames.length > 0)? 
-                                (likes.usernames.length > 1)? 
-                                    (likes.usernames.length > 2)?   
-                                        `${(liked)? 'você, ' : ''}${likes.usernames[0]}, ${likes.usernames[1]} e outras ${likes.likesTotal - 2} pessoas`
-                                    :`${(liked)? 'você, ': ''}${likes.usernames[0]} e ${likes.usernames[1]}`
-                                : `${(liked)? 'você e ': ''} ${likes.usernames[0]}` 
+                            (likes.likesTotal > 0)? 
+                                (likes.likesTotal > 1)? 
+                                    (likes.likesTotal > 2)?  
+                                        (likes.likesTotal > 3)? 
+                                            `${(liked)? `você, ${likes.usernames[0]} e outras ${likes.likesTotal - 2} pessoas` : `${likes.usernames[0]}, ${likes.usernames[1]} e outras ${likes.likesTotal - 2} pessoas`}`
+                                        :`${(liked)? `você, ${likes.usernames[0]} e ${likes.usernames[1]}` : `${likes.usernames[0]}, ${likes.usernames[1]} e outra 1 pessoa`}`
+                                    :`${(liked)? `você e ${likes.usernames[0]}`: `${likes.usernames[0]} e ${likes.usernames[1]}`}`
+                                : `${(liked)? 'você': `${likes.usernames[0]}`}` 
                             : [''] 
                         : ['']   
                     }>
                         {(likes)? likes.likesTotal : '0'} likes
                     </a>
-                    <ReactTooltip id='qualquer' type="light" place="bottom" effect="solid" 
+                    <ReactTooltip id='likes' type="light" place="bottom" effect="solid" 
                         getContent={(dataTip) => `${dataTip}`}
                     />
                 </span>
@@ -114,13 +156,29 @@ export default function PostCard ( {post} ) {
                 <TopLine>
                     <h1 id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} > 
                     {post.username}
-                    </h1>    
-                    { userId === post.userId ? <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> : null } 
+                    </h1>  
+                    <div>
+                        <ion-icon onClick={() => setEditing(!editing)} name="pencil-outline"></ion-icon>
+                        <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> 
+                        { userId === post.userId ? <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> : null } 
+                    </div> 
                 </TopLine>                       
                 <p>
-                    <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
-                    {post.text}
-                    </ReactHashtag>
+                    {editing ? 
+                    <form onSubmit={editPost}>
+                        <input
+                            type="text"
+                            value={postEdit}
+                            onChange={e => setPostEdit(e.target.value)}
+                            disabled = {disable}
+                        >
+                        </input>
+                    </form> : 
+                        <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
+                        {postEdit}
+                        </ReactHashtag>
+                    }
+
                 </p>
                 <a href={post.link} target="_blank" rel="noreferrer">
                     <Snippet image={post.postImage} title={post.postTitle} description={post.postDescription} link={post.link}/>
@@ -215,6 +273,15 @@ const CardContent = styled.div`
     flex-direction: column;
     gap: 10px;
     overflow: hidden;
+
+    input {
+        width: 100%;
+        height: 50px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 5px;
+    }
 `
 
 const TopLine = styled.div`
@@ -223,6 +290,12 @@ const TopLine = styled.div`
 
     ion-icon {
         cursor: pointer;
+    }
+
+    div {
+        width: 40px;
+        display: flex;
+        justify-content: space-between;
     }
     `
 

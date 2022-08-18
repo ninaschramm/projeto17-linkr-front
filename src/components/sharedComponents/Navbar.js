@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { IconContext } from "react-icons";
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
+import {DebounceInput} from 'react-debounce-input';
 
 //import UserContext from '../../contexts/UserContext';
 
@@ -11,12 +13,17 @@ export default function Navbar() {
     const navigate = useNavigate();
     const data = localStorage.getItem("UserInfo");
     const userInfo = JSON.parse(data);
+    const [letters, setLetters] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+
+    useEffect(() => {
+        handleSearch();
+    }, [letters])
 
     function logout(){
         localStorage.removeItem("UserInfo");
         navigate("/");
     }
-
 
     function close() {
         setViewMenu(false);
@@ -31,6 +38,57 @@ export default function Navbar() {
     }, []);
 
 
+    function handleSearch (){
+
+        if(letters.length >= 3){
+            const URL = `http://localhost:5000/serachUsers/${letters}`
+            const config = 
+            {
+                headers:{
+                'Authorization': `Bearer ${userInfo.token}` 
+                }
+            }
+            const promise = axios.get(URL,config);
+
+            promise.then(res => {
+                setSearchResults(res.data);
+                console.log(searchResults)
+            });
+            promise.catch((e) => {
+                console.log(e.response.data);
+                setSearchResults([]);
+                return
+            });
+        }
+        else{
+            setSearchResults([]);
+        }
+
+    }
+
+    function showSearchResults() {
+         if (searchResults === null) {
+             return 
+         } 
+         else if (searchResults.length === 0) {
+             return 
+         }
+         else {
+             return (<Results>
+                    {(searchResults.map((result, index) => {if(result != null)
+                        {
+                        console.log(result)
+                        return <Result key={index}>
+                                    <img src={result.picture}/>
+                                    <h3>{result.username}</h3>
+                                </Result>}}))}
+                    </Results>)
+        }
+    }
+
+
+    const callShowSearchResults = showSearchResults()
+
 	return (
         <>
             <Container>
@@ -39,7 +97,19 @@ export default function Navbar() {
                         <h1>linkr</h1>
                     </BrandLogo>
                 </LeftSide>
-                    
+                <SearchAndResults>
+                    <DebounceInput
+                        element={search}
+                        minLength={3}
+                        debounceTimeout={300}
+                        placeholder="Search for people"
+                        value={letters}
+                        onChange={e => setLetters(e.target.value)}
+                    />
+                    <ion-icon name="search-outline" onClick={() => setLetters(letters)}></ion-icon> 
+                    {callShowSearchResults} 
+                </SearchAndResults>
+                
                 <RightSide>
                     <IconContext.Provider value={{color: "white", size: 30}}>
                     <div onClick={toggleMenu}>
@@ -181,4 +251,61 @@ const Box = styled.div`
     height: 100vh;
     width: 100%;
     z-index: 5;
+`;
+
+const search = styled.input`
+    cursor: pointer;
+    width: 100%;
+    height: 45px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border:none;
+    outline-width: 0;
+`;
+
+const SearchAndResults = styled.div`
+    cursor: default;
+    height: 45px;
+    width: 100%;
+    padding: 16px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    ion-icon{
+        cursor: pointer;
+    }
+`;
+
+const Results = styled.div`
+    position: absolute;
+    top: 41px;
+    left: 0;
+    width: inherit;
+    height: 100px;
+    background: #E7E7E7;
+    border-radius: 0 0px 8px 8px;
+    padding: 14px 0 24px 18px;  
+    gap: 16;
+
+`;
+
+const Result = styled.div`
+    display: flex;
+    align-items: center;
+    img{
+        width: 39px;
+        height: 39px;
+        border-radius: 304px;
+    }
+    gap: 12px;
+    h3{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        color: #515151
+    }
 `;
