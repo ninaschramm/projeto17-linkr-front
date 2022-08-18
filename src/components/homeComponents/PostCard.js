@@ -18,6 +18,9 @@ export default function PostCard ( {post} ) {
     const [likes, setLikes] = useState(null);
     const [liked, setLiked] = useState(false);
     const [likeloading, setLikeloading] = useState(false);
+    const [editing, setEditing] = useState(false);
+    const [postEdit, setPostEdit] = useState(post.text);
+    const [disable, setDisable] = useState(false);
 
     useEffect(() => {
         getLikes();
@@ -91,6 +94,28 @@ export default function PostCard ( {post} ) {
         window.scrollTo(0, 0)
     }    
 
+    function editPost(e){
+        e.preventDefault();
+        setDisable(true);
+
+        const promise = axios.put(`http://localhost:5000/edit-post`, {
+            postId: post.id,
+            text: postEdit,
+        });
+
+        promise.then(() => {
+            setDisable(false);
+            setEditing(!editing);
+            return navigate("/timeline");
+        });
+
+        promise.catch((e) => {
+            console.log(e.response.data);
+            setDisable(false);
+            alert(e.response.data + ', não foi possível editar sua postagem');
+        })
+    }
+
     return (
         <Card>            
             <PerfilAndLikes>     
@@ -130,13 +155,28 @@ export default function PostCard ( {post} ) {
                 <TopLine>
                     <h1> 
                     {post.username}
-                    </h1>    
-                    <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon>    
+                    </h1>  
+                    <div>
+                        <ion-icon onClick={() => setEditing(!editing)} name="pencil-outline"></ion-icon>
+                        <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon>
+                    </div> 
                 </TopLine>                       
                 <p>
-                    <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
-                    {post.text}
-                    </ReactHashtag>
+                    {editing ? 
+                    <form onSubmit={editPost}>
+                        <input
+                            type="text"
+                            value={postEdit}
+                            onChange={e => setPostEdit(e.target.value)}
+                            disabled = {disable}
+                        >
+                        </input>
+                    </form> : 
+                        <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
+                        {postEdit}
+                        </ReactHashtag>
+                    }
+
                 </p>
                 <a href={post.link} target="_blank" rel="noreferrer">
                     <Snippet image={post.postImage} title={post.postTitle} description={post.postDescription} link={post.link}/>
@@ -229,6 +269,15 @@ const CardContent = styled.div`
     flex-direction: column;
     gap: 10px;
     overflow: hidden;
+
+    input {
+        width: 100%;
+        height: 50px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 5px;
+    }
 `
 
 const TopLine = styled.div`
@@ -237,6 +286,12 @@ const TopLine = styled.div`
 
     ion-icon {
         cursor: pointer;
+    }
+
+    div {
+        width: 40px;
+        display: flex;
+        justify-content: space-between;
     }
     `
 
