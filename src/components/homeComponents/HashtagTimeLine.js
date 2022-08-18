@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ThreeDots } from  'react-loader-spinner';
 import PostCard from './PostCard';
 import HashtagBar from './HashtagBar';
@@ -10,8 +10,7 @@ import UserContext from '../../contexts/UserContext';
 import Modal from './Modal';
 
 export default function HashtagTimeLine() {
-    const navigate = useNavigate();
-    const { isModalVisible, deleteId, setDeleteId } = useContext(UserContext)
+    const { isModalVisible, deleteId } = useContext(UserContext)
     let {hashtag} = useParams();
     const UserInfo = JSON. parse(localStorage.getItem('UserInfo'));
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ThreeDots } from  'react-loader-spinner';
 import PostCard from './PostCard';
 import HashtagBar from './HashtagBar';
@@ -10,8 +10,7 @@ import Modal from './Modal';
 import FollowButton from './FollowButton';
 
 export default function UserTimeLine() {
-    const navigate = useNavigate();
-    const { isModalVisible, deleteId, setDeleteId } = useContext(UserContext)
+    const { isModalVisible, deleteId } = useContext(UserContext)
     let {id} = useParams();
     const [posts, setPosts] = useState(null);
     const [name, setName] = useState(null);

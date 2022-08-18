@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { IconContext } from "react-icons";
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import {DebounceInput} from 'react-debounce-input';
@@ -79,7 +79,7 @@ export default function Navbar() {
                         {
                         console.log(result)
                         return <Result key={index}>
-                                    <img src={result.picture}/>
+                                    <img src={result.picture} alt=""/>
                                     <h3>{result.username}</h3>
                                 </Result>}}))}
                     </Results>)
