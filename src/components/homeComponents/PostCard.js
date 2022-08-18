@@ -13,12 +13,14 @@ import ReactTooltip from "react-tooltip";
 export default function PostCard ( {post} ) {
     const navigate = useNavigate();
     const { deleteId, setDeleteId, setIsModalVisible } = useContext(UserContext);   
-    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
-    const token = UserInfo.token;
-
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    }
+    const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));   
+    const userId = UserInfo.userId;
+    const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}` 
+            }
+        }
     
     const [likes, setLikes] = useState(null);
     const [liked, setLiked] = useState(false);
@@ -40,7 +42,7 @@ export default function PostCard ( {post} ) {
     function addLike(id){
         setLikeloading(true);
         const URL = `${process.env.REACT_APP_API_BASE_URL}`+id;
-        const promise = axios.post(URL, headers);
+        const promise = axios.post(URL, config);
         console.log(URL);
         promise.then(() => {
             getLikes();
@@ -56,7 +58,7 @@ export default function PostCard ( {post} ) {
     function deleteLike(id){
         setLikeloading(true);
         const URL = `${process.env.REACT_APP_API_BASE_URL}`+id;
-        const promise = axios.delete(URL, headers);
+        const promise = axios.delete(URL, config);
         promise.then(() => {
             getLikes();
             setLiked(false);
@@ -78,7 +80,7 @@ export default function PostCard ( {post} ) {
     return (
         <Card>            
             <PerfilAndLikes>     
-                <img src={post.userPicture} alt=""/>         
+                <img src={post.userPicture} id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} alt=""/>         
                 {(liked)? 
                     <button  className={(likeloading)? 'loading': 'red'} disabled={likeloading}>
                         <ion-icon name="heart" id={post.id} onClick={(e) => {if(!likeloading){deleteLike(e.target.id)}}}></ion-icon> 
@@ -110,10 +112,10 @@ export default function PostCard ( {post} ) {
             </PerfilAndLikes>
             <CardContent>
                 <TopLine>
-                    <h1> 
+                    <h1 id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} > 
                     {post.username}
                     </h1>    
-                    <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon>    
+                    { userId === post.userId ? <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> : null } 
                 </TopLine>                       
                 <p>
                     <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
@@ -151,6 +153,7 @@ const Card = styled.div `
             font-size: 19px;
             line-height: 23px;
             color: #FFFFFF;
+            cursor: pointer;
         }
 
         a {
@@ -178,6 +181,7 @@ const PerfilAndLikes = styled.div`
         object-fit: cover;
         border-radius: 26.5px;
         margin-bottom: 19px;
+        cursor: pointer;
     }
 
     button{

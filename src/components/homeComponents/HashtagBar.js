@@ -8,12 +8,18 @@ import { ThreeDots } from  'react-loader-spinner';
 export default function HashtagBar() {
 
     const navigate = useNavigate();
-
+    const UserInfo = JSON. parse(localStorage.getItem('UserInfo'));
     const [hashtags, setHashtags] = useState(null);
 
     useEffect(() => {
-        const URL = "https://projeto17-linkr-g5.herokuapp.com/hashtags";
-        const promise = axios.get(URL);
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/hashtags`;
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}`,
+            }
+        }
+        const promise = axios.get(URL, config);
         promise.then((res)=> {
             setHashtags(res.data);
         });

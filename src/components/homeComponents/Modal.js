@@ -24,13 +24,19 @@ export default function Modal( {id} ){
         const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, {   headers: headers,         
             data: payload
           });
-        promise.then((res) => 
-        console.log(res),
-        setIsModalVisible(false),   
-        navigate("/timeline"));        
-        promise.catch((err) => {
-			console.log(err.response.data);
-		});
+        promise.then((res) => postDeleted(res))   
+        promise.catch((err) => 
+			console.log(err.response.data),
+            setIsModalVisible(false),
+            alert("It wasn't possible to delete this post")
+            
+		);
+    }
+
+    function postDeleted(res) {
+        console.log(res);
+        setIsModalVisible(false);
+        window.location.reload()
     }
 
     return (

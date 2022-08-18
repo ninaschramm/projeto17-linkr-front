@@ -13,13 +13,20 @@ export default function UserTimeLine() {
     const navigate = useNavigate();
     const { isModalVisible, deleteId, setDeleteId } = useContext(UserContext)
     let {id} = useParams();
+    const UserInfo = JSON. parse(localStorage.getItem('UserInfo'));
 
     const [posts, setPosts] = useState(null);
     const [name, setName] = useState(null);
 
     useEffect(() => {
         const URL = `${process.env.REACT_APP_API_BASE_URL}/user/${id}`;
-        const promise = axios.get(URL);
+        const config = 
+        {
+            headers:{
+            'Authorization': `Bearer ${UserInfo.token}`,
+            }
+        }
+        const promise = axios.get(URL, config);
         promise.then((res)=> {
             setPosts(res.data);
             console.log(res.data)
