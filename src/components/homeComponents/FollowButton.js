@@ -7,6 +7,8 @@ export default function FollowButton( {id} ){
 
     const [follows, setFollows] = useState(null);
     const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const config = 
     {
@@ -26,27 +28,31 @@ export default function FollowButton( {id} ){
     }, [])
 
     function follow() {
+        setIsLoading(true)
         const URL = `${process.env.REACT_APP_API_BASE_URL}/users/${id}`;
         const promise = axios.post(URL, {}, config);
         promise.then((res)=> {
-            setFollows(true);            
+            setFollows(true);  
+            setIsLoading(false);         
         })
-        promise.catch((err) => console.log(err));    
+        promise.catch((err) => console.log(err), alert("Failed to execute this action"));    
     }
 
     function unfollow() {
+        setIsLoading(true)
         const URL = `${process.env.REACT_APP_API_BASE_URL}/users/${id}`;
         const promise = axios.delete(URL, config);
         promise.then((res)=> {
-            setFollows(false);            
+            setFollows(false);  
+            setIsLoading(false);          
         })
-        promise.catch((err) => console.log(err));    
+        promise.catch((err) => console.log(err), alert("Failed to execute this action"));    
     }
 
 
 return (
     <FollowDiv>
-        { follows ? <Unfollow onClick={unfollow}>Unfollow</Unfollow> : <Follow onClick={follow}>Follow</Follow> }
+        { follows ? <Unfollow disabled={isLoading} onClick={unfollow}>Unfollow</Unfollow> : <Follow onClick={follow}>Follow</Follow> }
     </FollowDiv>    
 )
 }
