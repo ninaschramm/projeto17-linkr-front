@@ -11,7 +11,7 @@ export default function Snippet(props) {
                 {description}
                 <a href={link} target="_blank" rel="noreferrer">{link}</a>
             </SnippetContent>
-            <img src={image} />
+            <img src={image} alt=""/>
         </SnippetCard>
     )
 }

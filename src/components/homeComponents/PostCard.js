@@ -12,7 +12,7 @@ import ReactTooltip from "react-tooltip";
 
 export default function PostCard ( {post} ) {
     const navigate = useNavigate();
-    const { deleteId, setDeleteId, setIsModalVisible } = useContext(UserContext);   
+    const { setDeleteId, setIsModalVisible } = useContext(UserContext);   
     const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
     
     const [likes, setLikes] = useState(null);
