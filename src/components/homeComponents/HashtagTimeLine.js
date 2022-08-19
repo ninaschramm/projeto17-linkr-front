@@ -57,9 +57,9 @@ export default function HashtagTimeLine() {
                 <Title>#hashtag</Title>
                 {callShowPosts}
 			</Container>
-            <div>
+            <Sidebar>
                 <HashtagBar />
-            </div>          
+            </Sidebar>          
 		</Page>
 	);
 }
@@ -88,4 +88,8 @@ const Title = styled.div`
     line-height: 64px;
     color: #FFFFFF;
     margin-bottom: 43px;
+`
+
+const Sidebar = styled.div`
+    margin-top: 171px;
 `

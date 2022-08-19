@@ -13,7 +13,7 @@ import UserTimeLine from './components/homeComponents/UserTimeLine';
 function App() {
 	
 	const [user, setUser] = useState(null);
-	const [isModalVisible, setIsModalVisible] = useState(false)
+	const [isModalVisible, setIsModalVisible] = useState(false);
     const [deleteId, setDeleteId] = useState('')
 
 	return (
