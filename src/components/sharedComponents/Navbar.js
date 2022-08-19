@@ -80,7 +80,7 @@ export default function Navbar() {
                         console.log(result)
                         return <Result key={index}>
                                     <img src={result.picture} alt=""/>
-                                    <h3>{result.username}</h3>
+                                    <h3 onClick={() => navigate(`/user/${result.id}`)}>{result.username}</h3>
                                 </Result>}}))}
                     </Results>)
         }
@@ -311,4 +311,5 @@ const Result = styled.div`
         color: #515151
     }
     margin-bottom: 16px;
+    cursor: pointer;
 `;
