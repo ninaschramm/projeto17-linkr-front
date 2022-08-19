@@ -7,6 +7,8 @@ import axios from "axios";
 import UserContext from '../../contexts/UserContext';
 import ReactTooltip from "react-tooltip";
 import CommentIcon from "./CommentIcon";
+import RepostIcon from "./RepostIcon";
+import {ImLoop} from 'react-icons/im';
 import CommentSection from "./CommentSection";
 
 
@@ -131,8 +133,19 @@ export default function PostCard ( {post} ) {
     }
 
     return (
+        <Container>
+            <Repost reposter= {post.reposter} >
+                {post.reposter ? 
+                <>
+                <ImLoop size={15} color={'#fff'}/> 
+                <h1>Re-posted by {  userId===post.reposter ?  "you" : post.reposterName}</h1>
+                </>
+                : <></>}  
+                
+            </Repost>
+            
         <>
-            <Card>       
+        <Card reposter={post.reposter}>           
                 <div>
                 <PerfilAndLikes>     
                     <img src={post.userPicture} id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} alt=""/>         
@@ -168,6 +181,7 @@ export default function PostCard ( {post} ) {
                     </span>
                 </PerfilAndLikes>
                 <CommentIcon id={post.id} showComments={showComments} setShowComments={setShowComments}/>
+                <RepostIcon id={post.id}/>
                 </div>     
                 <CardContent>
                     <TopLine>
@@ -203,6 +217,7 @@ export default function PostCard ( {post} ) {
             </Card>    
             { showComments ? <CommentSection id={post.id} userId={post.userId}/> : null }
         </>
+        </Container>
         );
 
     }
@@ -224,7 +239,10 @@ const Card = styled.div `
     line-height: 20px;
     color: #B7B7B7;
     overflow: hidden;
+    margin-top: ${props => props.reposter ? '20px':''};
     position: relative;
+    z-index: 2;
+    
 
         h1 {
             font-size: 19px;
@@ -317,4 +335,39 @@ const TopLine = styled.div`
         justify-content: space-between;
     }
     `
+
+const Container = styled.div`
+position:relative;
+`;
+
+const Repost = styled.div`
+
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    align-items: center;
+    h1{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 13px;
+
+        color: #FFFFFF;
+
+    }
+    box-sizing: border-box;
+    padding: ${props => props.reposter ? '12px 12px 85px 16px':''};
+    height: ${props => props.reposter ? '100px':''};
+    background: #1E1E1E;
+    border-radius: 16px;
+    position: absolute;
+    top: -4px;
+    left: 0;
+    z-index: 1;
+    ion-icon {
+        color: #FFFFFF;
+        
+    }
+`;
 
