@@ -6,6 +6,8 @@ import Snippet from "./Snippet";
 import axios from "axios";
 import UserContext from '../../contexts/UserContext';
 import ReactTooltip from "react-tooltip";
+import CommentIcon from "./CommentIcon";
+import CommentSection from "./CommentSection";
 
 
 
@@ -26,7 +28,8 @@ export default function PostCard ( {post} ) {
     const [likeloading, setLikeloading] = useState(false);
     const [editing, setEditing] = useState(false);
     const [postEdit, setPostEdit] = useState(post.text);
-    const [disable, setDisable] = useState(false);
+    const [disable, setDisable] = useState(false);    
+	const [showComments, setShowComments] = useState(false);
 
     useEffect(() => {
         getLikes();
@@ -122,75 +125,85 @@ export default function PostCard ( {post} ) {
         })
     }
 
+    function openCommentSection(){
+       setShowComments(true)
+       console.log(showComments)
+    }
+
     return (
-        <Card>            
-            <PerfilAndLikes>     
-                <img src={post.userPicture} id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} alt=""/>         
-                {(liked)? 
-                    <button  className={(likeloading)? 'loading': 'red'} disabled={likeloading}>
-                        <ion-icon name="heart" id={post.id} onClick={(e) => {if(!likeloading){deleteLike(e.target.id)}}}></ion-icon> 
-                    </button>  
-                    : 
-                    <button className={(likeloading)? 'loading' : ''} disabled={likeloading}>
-                        <ion-icon name="heart-outline"  id={post.id} onClick={(e) => {if(!likeloading){addLike(e.target.id)}}} ></ion-icon> 
-                    </button>  
-                    }
+        <>
+            <Card>       
+                <div>
+                <PerfilAndLikes>     
+                    <img src={post.userPicture} id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} alt=""/>         
+                    {(liked)? 
+                        <button  className={(likeloading)? 'loading': 'red'} disabled={likeloading}>
+                            <ion-icon name="heart" id={post.id} onClick={(e) => {if(!likeloading){deleteLike(e.target.id)}}}></ion-icon> 
+                        </button>  
+                        : 
+                        <button className={(likeloading)? 'loading' : ''} disabled={likeloading}>
+                            <ion-icon name="heart-outline"  id={post.id} onClick={(e) => {if(!likeloading){addLike(e.target.id)}}} ></ion-icon> 
+                        </button>  
+                        }
 
-                <span>
-                    <a  data-for='likes' data-tip={
-                        (likes)? 
-                            (likes.likesTotal > 0)? 
-                                (likes.likesTotal > 1)? 
-                                    (likes.likesTotal > 2)?  
-                                        (likes.likesTotal > 3)? 
-                                            `${(liked)? `você, ${likes.usernames[0]} e outras ${likes.likesTotal - 2} pessoas` : `${likes.usernames[0]}, ${likes.usernames[1]} e outras ${likes.likesTotal - 2} pessoas`}`
-                                        :`${(liked)? `você, ${likes.usernames[0]} e ${likes.usernames[1]}` : `${likes.usernames[0]}, ${likes.usernames[1]} e outra 1 pessoa`}`
-                                    :`${(liked)? `você e ${likes.usernames[0]}`: `${likes.usernames[0]} e ${likes.usernames[1]}`}`
-                                : `${(liked)? 'você': `${likes.usernames[0]}`}` 
-                            : [''] 
-                        : ['']   
-                    }>
-                        {(likes)? likes.likesTotal : '0'} likes
+                    <span>
+                        <a  data-for='likes' data-tip={
+                            (likes)? 
+                                (likes.likesTotal > 0)? 
+                                    (likes.likesTotal > 1)? 
+                                        (likes.likesTotal > 2)?  
+                                            (likes.likesTotal > 3)? 
+                                                `${(liked)? `você, ${likes.usernames[0]} e outras ${likes.likesTotal - 2} pessoas` : `${likes.usernames[0]}, ${likes.usernames[1]} e outras ${likes.likesTotal - 2} pessoas`}`
+                                            :`${(liked)? `você, ${likes.usernames[0]} e ${likes.usernames[1]}` : `${likes.usernames[0]}, ${likes.usernames[1]} e outra 1 pessoa`}`
+                                        :`${(liked)? `você e ${likes.usernames[0]}`: `${likes.usernames[0]} e ${likes.usernames[1]}`}`
+                                    : `${(liked)? 'você': `${likes.usernames[0]}`}` 
+                                : [''] 
+                            : ['']   
+                        }>
+                            {(likes)? likes.likesTotal : '0'} likes
+                        </a>
+                        <ReactTooltip id='likes' type="light" place="bottom" effect="solid" 
+                            getContent={(dataTip) => `${dataTip}`}
+                        />
+                    </span>
+                </PerfilAndLikes>
+                <CommentIcon id={post.id} showComments={showComments} setShowComments={setShowComments}/>
+                </div>     
+                <CardContent>
+                    <TopLine>
+                        <h1 id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} > 
+                        {post.username}
+                        </h1>  
+                        <div>
+                            { userId === post.userId ? <ion-icon onClick={() => setEditing(!editing)} name="pencil-outline"></ion-icon> : null }                     
+                            { userId === post.userId ? <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> : null } 
+                        </div> 
+                    </TopLine>                       
+                    <p>
+                        {editing ? 
+                        <form onSubmit={editPost}>
+                            <input
+                                type="text"
+                                value={postEdit}
+                                onChange={e => setPostEdit(e.target.value)}
+                                disabled = {disable}
+                            >
+                            </input>
+                        </form> : 
+                            <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
+                            {postEdit}
+                            </ReactHashtag>
+                        }
+
+                    </p>
+                    <a href={post.link} target="_blank" rel="noreferrer">
+                        <Snippet image={post.postImage} title={post.postTitle} description={post.postDescription} link={post.link}/>
                     </a>
-                    <ReactTooltip id='likes' type="light" place="bottom" effect="solid" 
-                        getContent={(dataTip) => `${dataTip}`}
-                    />
-                </span>
-            </PerfilAndLikes>
-            <CardContent>
-                <TopLine>
-                    <h1 id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} > 
-                    {post.username}
-                    </h1>  
-                    <div>
-                        <ion-icon onClick={() => setEditing(!editing)} name="pencil-outline"></ion-icon>
-                        <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> 
-                        { userId === post.userId ? <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> : null } 
-                    </div> 
-                </TopLine>                       
-                <p>
-                    {editing ? 
-                    <form onSubmit={editPost}>
-                        <input
-                            type="text"
-                            value={postEdit}
-                            onChange={e => setPostEdit(e.target.value)}
-                            disabled = {disable}
-                        >
-                        </input>
-                    </form> : 
-                        <ReactHashtag onHashtagClick={(elt)=>{navigate(`/hashtag/${elt.toLowerCase().slice(1)}`)}}>                  
-                        {postEdit}
-                        </ReactHashtag>
-                    }
-
-                </p>
-                <a href={post.link} target="_blank" rel="noreferrer">
-                    <Snippet image={post.postImage} title={post.postTitle} description={post.postDescription} link={post.link}/>
-                </a>
-            </CardContent>
-        </Card>    
-            );
+                </CardContent>
+            </Card>    
+            { showComments ? <CommentSection id={post.id} userId={post.userId}/> : null }
+        </>
+        );
 
     }
 
@@ -211,6 +224,7 @@ const Card = styled.div `
     line-height: 20px;
     color: #B7B7B7;
     overflow: hidden;
+    position: relative;
 
         h1 {
             font-size: 19px;

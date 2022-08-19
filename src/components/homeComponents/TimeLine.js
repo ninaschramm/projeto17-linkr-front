@@ -55,9 +55,9 @@ export default function TimeLine() {
                 <CreatePostCard />
                 {callShowPosts}
 			</Container>
-            <div>
+            <Sidebar>
                 <HashtagBar />
-            </div>          
+            </Sidebar>          
 		</Page>
 	);
 }
@@ -76,6 +76,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	//justify-content: center;
+    gap: 16px;
 `
 
 const Title = styled.div`
@@ -86,4 +87,8 @@ const Title = styled.div`
     line-height: 64px;
     color: #FFFFFF;
     margin-bottom: 43px;
+`
+
+const Sidebar = styled.div`
+    margin-top: 171px;
 `
