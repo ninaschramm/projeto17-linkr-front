@@ -58,8 +58,8 @@ return (
 }
 
 const FollowDiv = styled.div`
-    margin-top: 171px;
     margin-left: 214px;
+    margin-bottom: 45px;
 `
 
 const Follow = styled.button`
