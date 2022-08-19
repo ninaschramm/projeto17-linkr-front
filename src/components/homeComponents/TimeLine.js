@@ -36,16 +36,16 @@ export default function TimeLine() {
             return <ThreeDots width={51} height={13} color="#D1D1D4" />
         } 
         else if (follows === 204) {
-            return <>You don't follow anyone yet. Search for new friends!</>
+            return <Warning>You don't follow anyone yet. Search for new friends!</Warning>
         }
         else if (follows === 206) {
-            return <>No posts found from your friends.</>
+            return <Warning>No posts found from your friends.</Warning>
         }
         else if (posts === "") {
-            return <>There are no posts yet.</>
+            return <Warning>There are no posts yet.</Warning>
         }
         else if (posts === 'error') {
-            return <>An error occured while trying to fetch the posts, please refresh the page.</>
+            return <Warning>An error occured while trying to fetch the posts, please refresh the page.</Warning>
         }
         else {
             return (posts.map((post, index) => {if(post != null){return <PostCard key={index} post={post}/>}}))
@@ -104,8 +104,8 @@ const Sidebar = styled.div`
 const Warning = styled.div`
     font-family: 'Lato';
     font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
+    font-weight: 600;
+    font-size: 20px;
     line-height: 20px;
     color: #B7B7B7;
 `
