@@ -18,7 +18,7 @@ export default function HashtagTimeLine() {
 
     useEffect(() => {
         console.log(hashtag)
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/hashtags/${hashtag}`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/hashtags/${hashtag}`;
         const config = 
         {
             headers:{

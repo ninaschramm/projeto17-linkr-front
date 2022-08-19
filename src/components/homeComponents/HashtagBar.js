@@ -12,7 +12,7 @@ export default function HashtagBar() {
     const [hashtags, setHashtags] = useState(null);
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/hashtags`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/hashtags`;
         const promise = axios.get(URL);
 
         promise.then((res)=> {

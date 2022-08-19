@@ -21,7 +21,7 @@ export default function Modal( {id} ){
         }
         console.log(payload)     
 		
-        const promise = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/posts`, {   headers: headers,         
+        const promise = axios.delete(`https://projeto17-linkr-g5.herokuapp.com/posts`, {   headers: headers,         
             data: payload
           });
         promise.then((res) => postDeleted(res))   

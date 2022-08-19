@@ -15,7 +15,7 @@ export default function CommentIcon( { id, showComments, setShowComments } ){
     }
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/count/${id}`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/count/${id}`;
         const promise = axios.get(URL, config);
         promise.then((res)=> {
             setCount(res.data);           

@@ -18,7 +18,7 @@ export default function UserTimeLine() {
 
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/user/${id}`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/user/${id}`;
         const config = 
         {
             headers:{

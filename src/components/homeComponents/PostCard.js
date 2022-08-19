@@ -45,7 +45,7 @@ export default function PostCard ( {post} ) {
             'Authorization': `Bearer ${UserInfo.token}` 
             }
         }
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/like/`+post.id;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/like/`+post.id;
         const promise = axios.get(URL, config);
 
         promise.then((res)=> {
@@ -63,7 +63,7 @@ export default function PostCard ( {post} ) {
             }
         }
         setLikeloading(true);
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/like/`+ id;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/like/`+ id;
         const bodyfake = {};
         const promise = axios.post(URL, bodyfake, config);
         promise.then(() => {
@@ -85,7 +85,7 @@ export default function PostCard ( {post} ) {
             }
         }
         setLikeloading(true);
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/like/`+ id;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/like/`+ id;
         const promise = axios.delete(URL, config);
         promise.then(() => {
             getLikes();
@@ -109,7 +109,7 @@ export default function PostCard ( {post} ) {
         e.preventDefault();
         setDisable(true);
 
-        const promise = axios.put(`${process.env.REACT_APP_API_BASE_URL}/edit-post`, {
+        const promise = axios.put(`https://projeto17-linkr-g5.herokuapp.com/edit-post`, {
             postId: post.id,
             text: postEdit,
         });

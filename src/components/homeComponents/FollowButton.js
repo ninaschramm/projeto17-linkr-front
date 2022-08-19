@@ -18,7 +18,7 @@ export default function FollowButton( {id} ){
     }
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/users/${id}`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/users/${id}`;
         const promise = axios.get(URL, config);
         promise.then((res)=> {
             setFollows(res.data); 
@@ -29,7 +29,7 @@ export default function FollowButton( {id} ){
 
     function follow() {
         setIsLoading(true)
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/users/${id}`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/users/${id}`;
         const promise = axios.post(URL, {}, config);
         promise.then((res)=> {
             setFollows(true);  
@@ -40,7 +40,7 @@ export default function FollowButton( {id} ){
 
     function unfollow() {
         setIsLoading(true)
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/users/${id}`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/users/${id}`;
         const promise = axios.delete(URL, config);
         promise.then((res)=> {
             setFollows(false);  
