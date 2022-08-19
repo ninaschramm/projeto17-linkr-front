@@ -10,7 +10,13 @@ export default function CommentSection({ id, userId }){
     const [comment, setComment] = useState(null);
     const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));  
     const [isLoading, setIsLoading] = useState(false);
-    const [userStatus, setUserStatus] = useState(null);
+
+    async function follows(commentUserId) {
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/users/${commentUserId}`;
+        const response = await axios.get(URL, config);
+        console.log(response.data)       
+    }
+
     const config = 
         {
             headers:{
@@ -48,12 +54,13 @@ export default function CommentSection({ id, userId }){
 	};
 
     function checkUserStatus(commentUserId) {
+        const userFollows = follows(commentUserId);
         
-        if (commentUserId === UserInfo.userId) {
-            return "• you"
+        if (commentUserId === userId) {
+            return "• post's author" }  
+        else if (userFollows) {
+            return "• following"
         }
-        else if (commentUserId === userId) {
-            return "• post's author" }        
         else {
             return null
         }
