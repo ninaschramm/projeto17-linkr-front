@@ -13,6 +13,7 @@ export default function TimeLine() {
     const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
 
     const [posts, setPosts] = useState(null);
+    const [follows, setFollows] = useState(null)
 
     useEffect(() => {
         const URL = `${process.env.REACT_APP_API_BASE_URL}/posts`;
@@ -24,20 +25,27 @@ export default function TimeLine() {
         }
         const promise = axios.get(URL, config);
         promise.then((res)=> {
+            setFollows(res.status);
             setPosts(res.data);
         })
         promise.catch((err) => {setPosts('error'); console.log(err.response.data)});
     }, [])
 
-    function showPosts() {
+    function showPosts() {    
         if (posts === null) {
             return <ThreeDots width={51} height={13} color="#D1D1D4" />
         } 
+        else if (follows === 204) {
+            return <Warning>You don't follow anyone yet. Search for new friends!</Warning>
+        }
+        else if (follows === 206) {
+            return <Warning>No posts found from your friends.</Warning>
+        }
         else if (posts === "") {
-            return <>There are no posts yet.</>
+            return <Warning>There are no posts yet.</Warning>
         }
         else if (posts === 'error') {
-            return <>An error occured while trying to fetch the posts, please refresh the page.</>
+            return <Warning>An error occured while trying to fetch the posts, please refresh the page.</Warning>
         }
         else {
             return (posts.map((post, index) => {if(post != null){return <PostCard key={index} post={post}/>}}))
@@ -86,9 +94,18 @@ const Title = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #FFFFFF;
-    margin-bottom: 43px;
+    margin-bottom: 25px;
 `
 
 const Sidebar = styled.div`
-    margin-top: 171px;
+    margin-top: 232px;
+`
+
+const Warning = styled.div`
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 20px;
+    color: #B7B7B7;
 `

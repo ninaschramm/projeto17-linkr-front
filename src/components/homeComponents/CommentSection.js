@@ -58,7 +58,7 @@ export default function CommentSection({ id, userId }){
         
         if (commentUserId === userId) {
             return "• post's author" }  
-        else if (userFollows) {
+        else if (userFollows === true) {
             return "• following"
         }
         else {

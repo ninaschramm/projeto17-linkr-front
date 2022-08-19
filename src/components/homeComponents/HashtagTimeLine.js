@@ -87,9 +87,9 @@ const Title = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #FFFFFF;
-    margin-bottom: 43px;
+    margin-bottom: 40px;
 `
 
 const Sidebar = styled.div`
-    margin-top: 171px;
+    margin-top: 232px;
 `
