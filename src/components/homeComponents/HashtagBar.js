@@ -76,7 +76,7 @@ export default function HashtagBar() {
 }
 
 const Hashtags = styled.div`
-    margin-top: 45px;
+    margin-top: 245px;
     margin-left: 25px;
     width: 301px;
     height: 406px;

@@ -280,14 +280,16 @@ const SearchAndResults = styled.div`
 
 const Results = styled.div`
     position: absolute;
+    box-sizing: border-box;
     top: 41px;
     left: 0;
     width: inherit;
-    height: 100px;
+    min-height: 60px;
     background: #E7E7E7;
     border-radius: 0 0px 8px 8px;
-    padding: 14px 0 24px 18px;  
-    gap: 16;
+    padding: 14px 0 8px 18px;  
+    gap: 16px;
+
 
 `;
 
@@ -308,4 +310,5 @@ const Result = styled.div`
         line-height: 23px;
         color: #515151
     }
+    margin-bottom: 16px;
 `;
