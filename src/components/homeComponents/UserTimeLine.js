@@ -60,10 +60,10 @@ export default function UserTimeLine() {
                 <Title>{name ? `${name}'s Posts` : null} </Title>                
                 {callShowPosts}
 			</Container>
-            <div>
+            <Sidebar>
                 <FollowButton id={id} />
                 <HashtagBar />
-            </div>          
+            </Sidebar>          
 		</Page>
 	);
 }
@@ -94,4 +94,7 @@ const Title = styled.div`
     color: #FFFFFF;
     margin-bottom: 43px;
     justify-content: space-between;
+`
+const Sidebar = styled.div`
+    margin-top: 171px;
 `

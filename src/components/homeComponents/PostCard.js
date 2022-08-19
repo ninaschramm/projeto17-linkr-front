@@ -6,6 +6,10 @@ import Snippet from "./Snippet";
 import axios from "axios";
 import UserContext from '../../contexts/UserContext';
 import ReactTooltip from "react-tooltip";
+import CommentIcon from "./CommentIcon";
+import RepostIcon from "./RepostIcon";
+import {ImLoop} from 'react-icons/im';
+import CommentSection from "./CommentSection";
 
 
 
@@ -26,7 +30,8 @@ export default function PostCard ( {post} ) {
     const [likeloading, setLikeloading] = useState(false);
     const [editing, setEditing] = useState(false);
     const [postEdit, setPostEdit] = useState(post.text);
-    const [disable, setDisable] = useState(false);
+    const [disable, setDisable] = useState(false);    
+	const [showComments, setShowComments] = useState(false);
 
     useEffect(() => {
         getLikes();
@@ -122,18 +127,26 @@ export default function PostCard ( {post} ) {
         })
     }
 
+    function openCommentSection(){
+       setShowComments(true)
+       console.log(showComments)
+    }
+
     return (
         <Container>
             <Repost reposter= {post.reposter} >
                 {post.reposter ? 
                 <>
-                <ion-icon name="repeat-outline"></ion-icon>
+                <ImLoop size={15} color={'#fff'}/> 
                 <h1>Re-posted by {  userId===post.reposter ?  "you" : post.reposterName}</h1>
                 </>
                 : <></>}  
                 
             </Repost>
-            <Card reposter={post.reposter}>    
+            
+        <>
+        <Card reposter={post.reposter}>           
+                <div>
                 <PerfilAndLikes>     
                     <img src={post.userPicture} id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} alt=""/>         
                     {(liked)? 
@@ -167,14 +180,16 @@ export default function PostCard ( {post} ) {
                         />
                     </span>
                 </PerfilAndLikes>
+                <CommentIcon id={post.id} showComments={showComments} setShowComments={setShowComments}/>
+                <RepostIcon id={post.id}/>
+                </div>     
                 <CardContent>
                     <TopLine>
                         <h1 id={post.userId} onClick={(e) => {navigate(`/user/${e.target.id}`)}} > 
                         {post.username}
                         </h1>  
                         <div>
-                            <ion-icon onClick={() => setEditing(!editing)} name="pencil-outline"></ion-icon>
-                            <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> 
+                            { userId === post.userId ? <ion-icon onClick={() => setEditing(!editing)} name="pencil-outline"></ion-icon> : null }                     
                             { userId === post.userId ? <ion-icon id={post.id} onClick={(e) => openModal(e.target.id)} name="trash-outline"></ion-icon> : null } 
                         </div> 
                     </TopLine>                       
@@ -200,8 +215,10 @@ export default function PostCard ( {post} ) {
                     </a>
                 </CardContent>
             </Card>    
+            { showComments ? <CommentSection id={post.id} userId={post.userId}/> : null }
+        </>
         </Container>
-            );
+        );
 
     }
 
@@ -326,7 +343,7 @@ position:relative;
 const Repost = styled.div`
 
     display: flex;
-    gap: 10px;
+    gap: 5px;
     width: 100%;
     align-items: center;
     h1{
@@ -340,7 +357,7 @@ const Repost = styled.div`
 
     }
     box-sizing: border-box;
-    padding: ${props => props.reposter ? '12px 12px 85px 12px':''};
+    padding: ${props => props.reposter ? '12px 12px 85px 16px':''};
     height: ${props => props.reposter ? '100px':''};
     background: #1E1E1E;
     border-radius: 16px;
