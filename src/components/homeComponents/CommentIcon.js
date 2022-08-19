@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import {AiOutlineComment} from 'react-icons/ai';
 import styled from 'styled-components';
 import axios from "axios";
-import UserContext from "../../contexts/UserContext";
 
 export default function CommentIcon( { id, showComments, setShowComments } ){
 
