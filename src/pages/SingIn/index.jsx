@@ -21,7 +21,7 @@ export default function SingIn() {
 		e.preventDefault();
 		setDisable(true);
 
-		const promise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/signin`,{
+		const promise = axios.post(`https://projeto17-linkr-g5.herokuapp.com/signin`,{
 			email,
 			password
 		});

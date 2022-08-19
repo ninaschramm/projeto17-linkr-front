@@ -16,7 +16,7 @@ export default function TimeLine() {
     const [follows, setFollows] = useState(null)
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/posts`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/posts`;
         const config = 
         {
             headers:{

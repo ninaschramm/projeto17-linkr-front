@@ -8,7 +8,7 @@ export default function CommentIcon( { id } ){
 
     function CreatRepost (){
         const UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/repost`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/repost`;
         const config = 
         {
             headers:{

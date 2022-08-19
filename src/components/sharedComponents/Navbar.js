@@ -41,7 +41,7 @@ export default function Navbar() {
     function handleSearch (){
 
         if(letters.length >= 3){
-            const URL = `${process.env.REACT_APP_API_BASE_URL}/serachUsers/${letters}`
+            const URL = `https://projeto17-linkr-g5.herokuapp.com/serachUsers/${letters}`
             const config = 
             {
                 headers:{

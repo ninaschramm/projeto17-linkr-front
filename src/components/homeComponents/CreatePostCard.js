@@ -44,7 +44,7 @@ export default function CreatePostCard (props) {
             }
         }
 
-		const promise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/posts`, post, config);
+		const promise = axios.post(`https://projeto17-linkr-g5.herokuapp.com/posts`, post, config);
 		promise.then((res) => {
 			alert(res.data);
             setIsLoading(false);

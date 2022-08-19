@@ -12,7 +12,7 @@ export default function CommentSection({ id, userId }){
     const [isLoading, setIsLoading] = useState(false);
 
     async function follows(commentUserId) {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/users/${commentUserId}`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/users/${commentUserId}`;
         const response = await axios.get(URL, config);
         console.log(response.data)       
     }
@@ -26,7 +26,7 @@ export default function CommentSection({ id, userId }){
 
 
     useEffect(() => {
-        const URL = `${process.env.REACT_APP_API_BASE_URL}/comments/${id}`;
+        const URL = `https://projeto17-linkr-g5.herokuapp.com/comments/${id}`;
         const promise = axios.get(URL);
         promise.then((res)=> {
             console.log(res.data)
@@ -42,7 +42,7 @@ export default function CommentSection({ id, userId }){
 			comment
 		};
         
-		const promise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/comments/${id}`, postComment, config);
+		const promise = axios.post(`https://projeto17-linkr-g5.herokuapp.com/comments/${id}`, postComment, config);
 		promise.then((res) => {
             setIsLoading(false);
             window.location.reload();            
